@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<!--
+  Molecule Viewer v1.0 — 30 Apr 2026
+  Author: Rodney Salmon / Transpacific Services
+  Companion to: Interactive Periodic Table
+  Built with: Claude (Anthropic) — design, code, and iteration
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Molecule Viewer</title>
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,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">
+  <link rel="icon" type="image/png" sizes="180x180" href="data:image/png;base64,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">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Molecule">
+  <meta name="theme-color" content="#07090f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #07090f;
+  --surface:    #0d1117;
+  --surface2:   #111827;
+  --border:     #1e2433;
+  --border2:    #2a3347;
+  --text:       #c8d6f0;
+  --muted:      #5a6680;
+  --accent:     #4facfe;
+  --accent2:    #00d48b;
+  --accent3:    #f5c518;
+  --danger:     #ff4d6d;
+
+  /* CPK colours */
+  --cpk-C:  #8a9bb5;
+  --cpk-H:  #e8edf5;
+  --cpk-O:  #ff4d4d;
+  --cpk-N:  #4facfe;
+  --cpk-S:  #f5c518;
+  --cpk-P:  #ff8c42;
+  --cpk-Fe: #ff8c42;
+  --cpk-Mg: #34d399;
+  --cpk-Co: #f472b6;
+  --cpk-Cl: #34d399;
+  --cpk-Na: #a78bfa;
+  --cpk-Ca: #60a5fa;
+
+  /* Category colours */
+  --cat-organic:        #4facfe;
+  --cat-biomolecule:    #34d399;
+  --cat-carbon:         #8a9bb5;
+  --cat-organometallic: #f5c518;
+
+  --font-head: 'Bebas Neue', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  overflow: hidden;
+}
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* ── TOPBAR ──────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  height: 44px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 10;
+}
+
+.topbar-logo {
+  font-family: var(--font-head);
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.topbar-logo span {
+  display: none; /* hidden on mobile */
+}
+
+@media (min-width: 600px) {
+  .topbar-logo { font-size: 22px; }
+  .topbar-logo span {
+    display: inline;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    letter-spacing: 0;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+}
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mode-toggle {
+  display: flex;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.mode-btn {
+  padding: 8px 14px;
+  min-height: 36px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+.mode-btn.active {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.mode-btn:hover:not(.active) { color: var(--text); }
+
+.version-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  display: none;
+}
+@media (min-width: 600px) { .version-badge { display: block; } }
+
+/* ── MOLECULE STRIP (top horizontal scroll) ──────────────── */
+.mol-strip-wrap {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.strip-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-box {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-box::placeholder { color: var(--muted); }
+.search-box:focus { border-color: var(--accent); }
+
+.filter-row {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding: 5px 12px 6px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+
+.filter-btn {
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.filter-btn:hover { color: var(--text); }
+.filter-btn.active-organic        { background: #1a3050; border-color: var(--cat-organic); color: var(--cat-organic); }
+.filter-btn.active-biomolecule    { background: #0d2a20; border-color: var(--cat-biomolecule); color: var(--cat-biomolecule); }
+.filter-btn.active-carbon         { background: #1a1f2e; border-color: var(--cat-carbon); color: var(--cat-carbon); }
+.filter-btn.active-organometallic { background: #2a2000; border-color: var(--cat-organometallic); color: var(--cat-organometallic); }
+
+/* The horizontal molecule card scroll row */
+.mol-strip {
+  display: flex;
+  gap: 6px;
+  padding: 7px 12px 9px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.mol-strip::-webkit-scrollbar { display: none; }
+
+.mol-card {
+  flex-shrink: 0;
+  width: 120px;
+  padding: 8px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mol-card:active { background: var(--surface2); }
+
+.mol-card.active {
+  background: var(--surface2);
+  border-color: var(--accent);
+}
+
+.mol-card-symbol {
+  font-family: var(--font-head);
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mol-card.active .mol-card-symbol { color: var(--accent); }
+
+.mol-card-formula {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.mol-card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Legacy sidebar — hidden */
+.sidebar { display: none; }
+
+/* ── MAIN AREA ───────────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── VIEWER ──────────────────────────────────────────────── */
+.viewer-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  background: radial-gradient(ellipse at center, #0f1420 0%, var(--bg) 70%);
+}
+
+#molCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+#molCanvas:active { cursor: grabbing; }
+
+.viewer-hud {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.hud-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  background: rgba(13,17,23,0.8);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 8px;
+  letter-spacing: 0.3px;
+}
+
+.hud-badge.active-mode { color: var(--accent2); border-color: var(--accent2); }
+
+.hud-reset {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  background: rgba(13,17,23,0.85);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 5px 10px;
+  min-height: 30px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: color 0.15s, border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.hud-reset:hover, .hud-reset:active { color: var(--text); border-color: var(--accent); }
+
+.viewer-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0.6;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.no-mol {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--muted);
+}
+
+.no-mol-icon {
+  font-size: 48px;
+  opacity: 0.3;
+}
+
+.no-mol-text {
+  font-family: var(--font-head);
+  font-size: 20px;
+  letter-spacing: 2px;
+  opacity: 0.4;
+}
+
+/* ── DETAIL PANEL ────────────────────────────────────────── */
+.detail-panel {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 10px 14px 12px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 38vh;
+  -webkit-overflow-scrolling: touch;
+}
+
+.detail-inner {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.detail-left { flex: 1; min-width: 0; }
+
+.detail-name {
+  font-family: var(--font-head);
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 1px;
+}
+
+.detail-formula {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.detail-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.detail-meta {
+  display: flex;
+  gap: 14px;
+  margin-top: 7px;
+  flex-wrap: wrap;
+}
+
+.detail-kv {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.detail-k {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.detail-v {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+}
+
+.detail-right {
+  flex-shrink: 0;
+}
+
+.atom-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+  max-width: 180px;
+}
+
+.atom-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.atom-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── EMPTY PANEL ─────────────────────────────────────────── */
+.empty-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-family: var(--font-head);
+  font-size: 16px;
+  letter-spacing: 2px;
+  opacity: 0.4;
+  grid-column: 1/-1;
+}
+
+/* ── ATOM TOOLTIP ────────────────────────────────────────── */
+.atom-tooltip {
+  position: absolute;
+  background: rgba(13,17,23,0.95);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.5;
+  white-space: nowrap;
+  display: none;
+  z-index: 20;
+  backdrop-filter: blur(4px);
+}
+.atom-tooltip.visible { display: block; }
+.hidden { display: none !important; }
+
+/* ── ROTATION INDICATOR ──────────────────────────────────── */
+.rot-ring {
+  position: absolute;
+  bottom: 24px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--border2);
+  border-radius: 50%;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── MOBILE LIST (hidden by default) ────────────────────── */
+.mobile-list {
+  display: none;
+  padding: 0 16px 80px;
+  overflow-y: auto;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mob-cat-section { margin-top: 14px; }
+
+.mob-cat-heading {
+  display: grid;
+  grid-template-columns: 36px 1fr 72px 20px;
+  align-items: center;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 5;
+}
+.mob-cat-dot { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+.mob-cat-title {
+  font-family: var(--font-mono); font-size:0.60rem; letter-spacing:2px;
+  text-transform:uppercase; color:var(--muted); grid-column:2;
+}
+.mob-col-h {
+  font-family:var(--font-mono); font-size:0.50rem; letter-spacing:1px;
+  text-transform:uppercase; color:#2a3550; text-align:left; grid-column:3;
+}
+.mob-col-h-phase { text-align:center; grid-column:4; }
+
+.mob-el-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 72px 20px;
+  align-items: center;
+  padding: 9px 4px;
+  border-bottom: 1px solid #0d1220;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mob-el-row:active { background: #0d1220; }
+
+.mob-el-sym { font-family:var(--font-head); font-size:1.1rem; line-height:1; }
+.mob-el-name { font-size:0.82rem; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.mob-el-year { font-family:var(--font-mono); font-size:0.58rem; color:var(--muted); }
+.mob-el-cat-dot { width:8px; height:8px; border-radius:50%; display:block; margin:0 auto; }
+
+.mob-cat-section.dimmed { opacity:0.15; pointer-events:none; }
+.mob-el-row.dimmed { opacity:0.15; pointer-events:none; }
+.mob-el-row.highlighted { background:#0d1525; }
+
+/* ── BOTTOM SHEET ────────────────────────────────────────── */
+.bottom-sheet {
+  display: none;
+  position: fixed;
+  left:0; right:0; bottom:0;
+  width: 100%;
+  max-height: 92vh;
+  background: #090c14;
+  border-top: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.22,1,0.36,1);
+  z-index: 300;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bottom-sheet.open { transform: translateY(0); }
+.bottom-sheet::before {
+  content:''; display:block;
+  width:36px; height:4px;
+  background:var(--border2); border-radius:2px;
+  margin:10px auto 0; flex-shrink:0;
+}
+
+.bs-head {
+  padding: 10px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  background: #0b0e17;
+  flex-shrink: 0;
+  display: flex; align-items: flex-start; gap: 12px;
+  position: relative;
+}
+.bs-name { font-family:var(--font-head); font-size:26px; letter-spacing:2px; line-height:1; color:var(--text); }
+.bs-formula { font-family:var(--font-mono); font-size:11px; color:var(--accent); margin-top:3px; }
+.bs-meta { display:flex; gap:14px; margin-top:6px; flex-wrap:wrap; }
+.bs-kv { display:flex; flex-direction:column; gap:1px; }
+.bs-k { font-family:var(--font-mono); font-size:8px; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; }
+.bs-v { font-family:var(--font-mono); font-size:11px; color:var(--text); }
+.bs-left { flex:1; min-width:0; }
+.bs-close {
+  position:absolute; top:10px; right:12px;
+  background:none; border:none; color:var(--muted);
+  font-size:1.2rem; cursor:pointer; font-family:monospace; line-height:1;
+  transition:color 0.15s;
+  min-width:36px; min-height:36px;
+  display:flex; align-items:center; justify-content:center;
+}
+.bs-close:hover { color:var(--text); }
+
+.bs-canvas-wrap {
+  width:100%; height:200px; flex-shrink:0;
+  position:relative; overflow:hidden;
+  background: radial-gradient(ellipse at center, #0f1420 0%, var(--bg) 70%);
+}
+.bs-canvas-wrap canvas { display:block; width:100% !important; height:200px !important; }
+
+.bs-body { overflow-y:auto; padding:14px 16px 32px; flex:1; -webkit-overflow-scrolling:touch; }
+.bs-desc { font-size:12px; color:var(--muted); line-height:1.6; margin-bottom:10px; }
+.bs-atoms { display:flex; flex-wrap:wrap; gap:5px; }
+
+/* ═══════════════════════════════════════════════════
+   MOBILE LAYOUT  (< 768px)
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  .app { display:flex; flex-direction:column; height:100vh; height:100dvh; overflow:hidden; }
+  .topbar { height:44px; padding:0 14px; gap:10px; }
+  .topbar-logo { font-size:17px; }
+  .topbar-logo span { display:none; }
+  .version-badge { display:none; }
+  /* Hide strip+viewer, show list */
+  .mol-strip-wrap { display:none; }
+  .main { display:none; }
+  .mobile-list { display:block; }
+  /* Activate bottom sheet */
+  .bottom-sheet { display:flex; }
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      3D MOLECULE VIEWER
+      <span>// INTERACTIVE MOLECULAR EXPLORER</span>
+    </div>
+    <div class="topbar-right">
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="btnBS" onclick="setMode('ball-stick')">B&amp;S</button>
+        <button class="mode-btn" id="btnSF" onclick="setMode('space-fill')">FILL</button>
+      </div>
+      <div class="version-badge">v1.0 · 30 APR 2026</div>
+    </div>
+  </header>
+
+  <!-- MOLECULE STRIP -->
+  <div class="mol-strip-wrap">
+    <div class="strip-controls">
+      <input type="text" class="search-box" id="searchBox" placeholder="Search…" oninput="filterList()">
+      <div class="filter-row" id="filterRow">
+        <button class="filter-btn" id="f-all" onclick="setFilter('all')" style="color:var(--text);border-color:var(--border2)">ALL</button>
+        <button class="filter-btn" id="f-organic" onclick="setFilter('organic')">ORGANIC</button>
+        <button class="filter-btn" id="f-biomolecule" onclick="setFilter('biomolecule')">BIOMOLECULE</button>
+        <button class="filter-btn" id="f-carbon" onclick="setFilter('carbon')">CARBON</button>
+        <button class="filter-btn" id="f-organometallic" onclick="setFilter('organometallic')">ORGANOMETAL</button>
+      </div>
+    </div>
+    <div class="mol-strip" id="molStrip"></div>
+  </div>
+
+  <!-- MAIN: VIEWER + DETAIL -->
+  <main class="main">
+    <div class="viewer-wrap" id="viewerWrap">
+      <canvas id="molCanvas"></canvas>
+      <div class="viewer-hud">
+        <button class="hud-reset" id="resetBtn" onclick="resetView()">⟳ RESET</button>
+        <div class="hud-badge active-mode" id="modeBadge">B &amp; S</div>
+        <div class="hud-badge" id="atomsBadge">— ATOMS</div>
+        <div class="hud-badge" id="bondsBadge">— BONDS</div>
+        <div class="hud-badge" id="rotateBadge" style="color:var(--accent2);border-color:var(--accent2)">● AUTO</div>
+      </div>
+      <div class="viewer-hint">DRAG TO ROTATE · SCROLL TO ZOOM</div>
+      <div class="rot-ring"></div>
+      <div class="atom-tooltip" id="atomTooltip"></div>
+      <div class="no-mol" id="noMol">
+        <div class="no-mol-icon">⬡</div>
+        <div class="no-mol-text">SELECT A MOLECULE</div>
+      </div>
+    </div>
+    <div class="detail-panel" id="detailPanel">
+      <div class="empty-panel hidden" id="emptyPanel">SELECT A MOLECULE TO VIEW DETAILS</div>
+      <div class="detail-inner hidden" id="detailInner">
+        <div class="detail-left">
+          <div class="detail-name" id="dName"></div>
+          <div class="detail-formula" id="dFormula"></div>
+          <div class="detail-desc" id="dDesc"></div>
+          <div class="detail-meta">
+            <div class="detail-kv"><div class="detail-k">MW</div><div class="detail-v" id="dMW"></div></div>
+            <div class="detail-kv"><div class="detail-k">CATEGORY</div><div class="detail-v" id="dCat"></div></div>
+            <div class="detail-kv"><div class="detail-k">YEAR</div><div class="detail-v" id="dYear"></div></div>
+          </div>
+        </div>
+        <div class="detail-right">
+          <div class="atom-counts" id="atomCounts"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MOBILE LIST (< 768px only) -->
+  <div class="mobile-list" id="mobileList"></div>
+
+  <!-- BOTTOM SHEET (mobile detail panel) -->
+  <div class="bottom-sheet" id="bottomSheet">
+    <div class="bs-head">
+      <div class="bs-left">
+        <div class="bs-name" id="bsName"></div>
+        <div class="bs-formula" id="bsFormula"></div>
+        <div class="bs-meta">
+          <div class="bs-kv"><div class="bs-k">MW</div><div class="bs-v" id="bsMW"></div></div>
+          <div class="bs-kv"><div class="bs-k">CATEGORY</div><div class="bs-v" id="bsCat"></div></div>
+          <div class="bs-kv"><div class="bs-k">YEAR</div><div class="bs-v" id="bsYear"></div></div>
+        </div>
+      </div>
+      <button class="bs-close" id="bsClose">✕</button>
+    </div>
+    <div class="bs-canvas-wrap">
+      <canvas id="bsMolCanvas"></canvas>
+    </div>
+    <div class="bs-body">
+      <div class="bs-desc" id="bsDesc"></div>
+      <div class="bs-atoms" id="bsAtoms"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+//  MOLECULE DATA — all 20 molecules
+//  Coordinates: Angstroms, centred at origin
+//  el: element symbol, x/y/z: position
+//  bonds: array of [atomIndex, atomIndex]
+// ============================================================
+const MOLECULES = [
+
+// 1. Buckminsterfullerene C60
+{
+  id: 'c60',
+  name: 'Buckminsterfullerene',
+  formula: 'C₆₀',
+  mw: '720.66 g/mol',
+  category: 'carbon',
+  year: '1985',
+  desc: 'A truncated icosahedron of 60 carbon atoms arranged in 20 hexagons and 12 pentagons — soccer-ball geometry at the nanoscale. Nobel Prize in Chemistry 1996.',
+  atoms: (function(){
+    // Generate true C60 truncated icosahedron vertices
+    const phi = (1 + Math.sqrt(5)) / 2;
+    const verts = [];
+    const perms = (a,b,c) => {
+      const p = [[a,b,c],[a,c,b],[b,a,c],[b,c,a],[c,a,b],[c,b,a]];
+      const signs = [-1,1];
+      const out = [];
+      p.forEach(([x,y,z]) => {
+        signs.forEach(sx => signs.forEach(sy => signs.forEach(sz => {
+          out.push([sx*x, sy*y, sz*z]);
+        })));
+      });
+      return out;
+    };
+    // Truncated icosahedron vertices (3 classes)
+    const r = 3.5; // scale
+    const v1 = perms(0, 1, 3*phi).map(v => ({el:'C', x:v[0]*r/3.4, y:v[1]*r/3.4, z:v[2]*r/3.4}));
+    const v2 = perms(1, 2+phi, 2*phi).map(v => ({el:'C', x:v[0]*r/3.4, y:v[1]*r/3.4, z:v[2]*r/3.4}));
+    const v3 = perms(2, 2*phi+1, phi).map(v => ({el:'C', x:v[0]*r/3.4, y:v[1]*r/3.4, z:v[2]*r/3.4}));
+    // Combine and deduplicate to get 60 unique
+    const all = [...v1,...v2,...v3];
+    const seen = new Set();
+    const unique = [];
+    all.forEach(v => {
+      const key = `${v.x.toFixed(3)},${v.y.toFixed(3)},${v.z.toFixed(3)}`;
+      if(!seen.has(key)){ seen.add(key); unique.push(v); }
+    });
+    return unique.slice(0,60);
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    const phi = (1+Math.sqrt(5))/2;
+    const r = 3.5;
+    // Compute bonds by distance threshold
+    return []; // filled after atoms known — computed in JS at render time
+  })(),
+  autoBonds: true,
+  bondThreshold: 1.65
+},
+
+// 2. DNA Double Helix (simplified backbone)
+{
+  id: 'dna',
+  name: 'DNA Double Helix',
+  formula: '(C₁₀H₁₁N₄O₆P)ₙ',
+  mw: '~650 g/mol per bp',
+  category: 'biomolecule',
+  year: '1953',
+  desc: 'The iconic double-helical structure discovered by Watson and Crick. Two antiparallel phosphate-sugar backbone strands connected by nitrogenous base pairs encode genetic information.',
+  atoms: (function(){
+    const atoms = [];
+    const steps = 14; // base pair steps
+    const rise = 0.8;  // Å per step
+    const twist = (2*Math.PI*36/360); // 36° per bp
+    const r1 = 2.5, r2 = 2.5;
+    for(let i=0;i<steps;i++){
+      const a = i * twist;
+      const y = (i - steps/2) * rise;
+      // Strand 1 backbone
+      atoms.push({el:'P', x:r1*Math.cos(a),    y, z:r1*Math.sin(a)});
+      atoms.push({el:'O', x:r1*Math.cos(a)*0.7, y:y+0.3, z:r1*Math.sin(a)*0.7});
+      atoms.push({el:'C', x:r1*Math.cos(a+0.4)*1.8, y:y+0.15, z:r1*Math.sin(a+0.4)*1.8});
+      // Strand 2 backbone (antiparallel)
+      const b = a + Math.PI;
+      atoms.push({el:'P', x:r2*Math.cos(b),    y, z:r2*Math.sin(b)});
+      atoms.push({el:'O', x:r2*Math.cos(b)*0.7, y:y-0.3, z:r2*Math.sin(b)*0.7});
+      atoms.push({el:'C', x:r2*Math.cos(b+0.4)*1.8, y:y-0.15, z:r2*Math.sin(b+0.4)*1.8});
+      // Base pair (N-N bridge)
+      atoms.push({el:'N', x:r1*Math.cos(a)*0.4, y:y+0.05, z:r1*Math.sin(a)*0.4});
+      atoms.push({el:'N', x:r2*Math.cos(b)*0.4, y:y-0.05, z:r2*Math.sin(b)*0.4});
+    }
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    const steps = 14;
+    for(let i=0;i<steps;i++){
+      const base = i*8;
+      // Strand 1: P-O-C
+      bonds.push([base+0, base+1]);
+      bonds.push([base+1, base+2]);
+      // Strand 2: P-O-C
+      bonds.push([base+3, base+4]);
+      bonds.push([base+4, base+5]);
+      // Base pair N-N
+      bonds.push([base+6, base+7]);
+      // Connect C to N bases
+      bonds.push([base+2, base+6]);
+      bonds.push([base+5, base+7]);
+      // Backbone chain
+      if(i>0){
+        bonds.push([base-8+0, base+0]);
+        bonds.push([base-8+3, base+3]);
+      }
+    }
+    return bonds;
+  })()
+},
+
+// 3. Hemoglobin (4 heme groups + simplified protein backbone)
+{
+  id: 'hemoglobin',
+  name: 'Hemoglobin',
+  formula: 'C₂₉₅₂H₄₆₆₄N₈₁₂O₈₃₂S₈Fe₄',
+  mw: '64,458 g/mol',
+  category: 'biomolecule',
+  year: '1959',
+  desc: 'The iron-containing oxygen-transport metalloprotein in red blood cells. Four subunits each carry a heme group whose central iron atom reversibly binds one O₂ molecule.',
+  atoms: (function(){
+    const atoms = [];
+    // 4 heme centres
+    const centres = [[-3,0,-3],[3,0,-3],[-3,0,3],[3,0,3]];
+    centres.forEach(([cx,cy,cz]) => {
+      // Central Fe
+      atoms.push({el:'Fe', x:cx, y:cy, z:cz});
+      // Porphyrin ring N atoms
+      for(let i=0;i<4;i++){
+        const a = i*Math.PI/2;
+        atoms.push({el:'N', x:cx+1.2*Math.cos(a), y:cy+0.3, z:cz+1.2*Math.sin(a)});
+      }
+      // Carbon ring
+      for(let i=0;i<8;i++){
+        const a = i*Math.PI/4;
+        atoms.push({el:'C', x:cx+2.0*Math.cos(a), y:cy+0.1*((i%2)-0.5), z:cz+2.0*Math.sin(a)});
+      }
+      // Axial histidine N
+      atoms.push({el:'N', x:cx, y:cy-2.0, z:cz});
+      atoms.push({el:'O', x:cx, y:cy+2.0, z:cz});
+    });
+    // Simplified alpha-helix backbone connections between subunits
+    const helixPts = [
+      {el:'C',x:-5,y:1,z:0},{el:'C',x:-4,y:2,z:1},{el:'C',x:-3,y:3,z:0},
+      {el:'N',x:-2,y:2,z:-1},{el:'C',x:-1,y:1,z:0},{el:'C',x:0,y:2,z:1},
+      {el:'C',x:1,y:3,z:0},{el:'N',x:2,y:2,z:-1},{el:'C',x:3,y:1,z:0},
+      {el:'C',x:4,y:2,z:1},{el:'C',x:5,y:3,z:0},
+    ];
+    helixPts.forEach(p => atoms.push(p));
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    const centres = [[-3,0,-3],[3,0,-3],[-3,0,3],[3,0,3]];
+    let base = 0;
+    centres.forEach(() => {
+      // Fe to 4 N
+      for(let i=0;i<4;i++) bonds.push([base, base+1+i]);
+      // N to adjacent C
+      for(let i=0;i<4;i++){
+        bonds.push([base+1+i, base+5+(i*2)]);
+        bonds.push([base+1+i, base+5+(i*2+7)%8]);
+      }
+      // C ring
+      for(let i=0;i<8;i++) bonds.push([base+5+i, base+5+(i+1)%8]);
+      // axial
+      bonds.push([base, base+13]);
+      bonds.push([base, base+14]);
+      base += 15;
+    });
+    // helix
+    const hBase = base;
+    for(let i=0;i<10;i++) bonds.push([hBase+i, hBase+i+1]);
+    return bonds;
+  })()
+},
+
+// 4. Chlorophyll a
+{
+  id: 'chlorophyll',
+  name: 'Chlorophyll a',
+  formula: 'C₅₅H₇₂MgN₄O₅',
+  mw: '893.51 g/mol',
+  category: 'biomolecule',
+  year: '1818',
+  desc: 'The primary pigment in plant photosynthesis. A magnesium porphyrin complex with a phytol tail that captures light energy and converts it to chemical energy.',
+  atoms: (function(){
+    const atoms = [];
+    // Mg-porphyrin core
+    atoms.push({el:'Mg', x:0, y:0, z:0});
+    for(let i=0;i<4;i++){
+      const a = i*Math.PI/2 + Math.PI/4;
+      atoms.push({el:'N', x:1.5*Math.cos(a), y:0, z:1.5*Math.sin(a)});
+    }
+    // Porphyrin C ring (20 carbons in main ring)
+    for(let i=0;i<20;i++){
+      const a = i*2*Math.PI/20;
+      const r = i%5===2 ? 3.5 : 3.0;
+      atoms.push({el:'C', x:r*Math.cos(a), y:0.1*(i%3-1), z:r*Math.sin(a)});
+    }
+    // Side chain O atoms
+    atoms.push({el:'O', x:3.5, y:0.5, z:-1.5});
+    atoms.push({el:'O', x:3.5, y:-0.5, z:-1.5});
+    // Phytol tail (simplified)
+    const tail = [{x:4,y:0,z:-2},{x:4.8,y:0,z:-2.8},{x:5.6,y:0.3,z:-2.4},
+                  {x:6.4,y:0,z:-3.2},{x:7.2,y:0,z:-4},{x:8,y:0.3,z:-4.5},
+                  {x:8.8,y:0,z:-5.3},{x:9.6,y:0,z:-6}];
+    tail.forEach(p => atoms.push({el:'C', ...p}));
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    // Mg to N
+    for(let i=0;i<4;i++) bonds.push([0, 1+i]);
+    // N to ring C connections
+    bonds.push([1,5],[1,8],[2,9],[2,12],[3,13],[3,16],[4,17],[4,20]);
+    // C ring
+    for(let i=0;i<19;i++) bonds.push([5+i, 6+i]);
+    bonds.push([24,5]);
+    // tail
+    for(let i=0;i<7;i++) bonds.push([27+i, 28+i]);
+    bonds.push([5, 25],[25,26],[26,27]);
+    return bonds;
+  })()
+},
+
+// 5. Caffeine
+{
+  id: 'caffeine',
+  name: 'Caffeine',
+  formula: 'C₈H₁₀N₄O₂',
+  mw: '194.19 g/mol',
+  category: 'organic',
+  year: '1819',
+  desc: 'A purine alkaloid and central nervous system stimulant found in coffee, tea, and cacao. The world\'s most widely consumed psychoactive substance.',
+  atoms: [
+    {el:'N',x:0.0,y:1.4,z:0},
+    {el:'C',x:1.2,y:0.7,z:0},
+    {el:'N',x:1.2,y:-0.7,z:0},
+    {el:'C',x:0.0,y:-1.4,z:0},
+    {el:'C',x:-1.2,y:-0.7,z:0},
+    {el:'C',x:-1.2,y:0.7,z:0},
+    {el:'N',x:2.35,y:-1.15,z:0},
+    {el:'C',x:2.35,y:1.15,z:0},
+    {el:'N',x:3.1,y:0.0,z:0},
+    {el:'O',x:0.0,y:-2.6,z:0},
+    {el:'O',x:-2.3,y:1.3,z:0},
+    {el:'C',x:0.0,y:2.85,z:0},
+    {el:'C',x:2.35,y:-2.6,z:0},
+    {el:'C',x:4.65,y:0.0,z:0},
+    {el:'H',x:-0.55,y:3.35,z:0.55},{el:'H',x:0.55,y:3.35,z:-0.55},{el:'H',x:0.0,y:3.35,z:0},
+    {el:'H',x:1.8,y:-3.1,z:0.55},{el:'H',x:3.4,y:-2.8,z:0},{el:'H',x:2.0,y:-3.05,z:-0.55},
+    {el:'H',x:5.2,y:0.55,z:0.55},{el:'H',x:5.2,y:-0.55,z:-0.55},{el:'H',x:4.7,y:0.0,z:0.9},
+    {el:'H',x:3.2,y:2.1,z:0}
+  ],
+  bonds: [
+    [0,1],[1,2],[2,3],[3,4],[4,5],[5,0],
+    [1,7],[2,6],[6,8],[7,8],
+    [3,9],[5,10],
+    [0,11],[2,12],[6,13],
+    [11,14],[11,15],[11,16],
+    [12,17],[12,18],[12,19],
+    [13,20],[13,21],[13,22],
+    [7,23]
+  ]
+},
+
+// 6. Lycopene
+{
+  id: 'lycopene',
+  name: 'Lycopene',
+  formula: 'C₄₀H₅₆',
+  mw: '536.87 g/mol',
+  category: 'organic',
+  year: '1930',
+  desc: 'A bright-red carotenoid pigment found in tomatoes, watermelon, and other red fruits. The extended conjugated double-bond chain absorbs blue light, producing its vivid colour.',
+  atoms: (function(){
+    const atoms = [];
+    // 40-carbon polyene chain
+    for(let i=0;i<40;i++){
+      const x = (i-20)*0.7;
+      const y = (i%2===0 ? 0.25 : -0.25) + Math.sin(i*0.3)*0.3;
+      atoms.push({el:'C', x, y, z:0});
+    }
+    // Terminal methyl branches at ends
+    atoms.push({el:'C', x:-14.7, y:0.9, z:0});
+    atoms.push({el:'C', x:-14.7, y:-0.9, z:0});
+    atoms.push({el:'C', x:14.7, y:0.9, z:0});
+    atoms.push({el:'C', x:14.7, y:-0.9, z:0});
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    for(let i=0;i<39;i++) bonds.push([i,i+1]);
+    // Terminal methyl
+    bonds.push([0,40],[0,41],[39,42],[39,43]);
+    return bonds;
+  })()
+},
+
+// 7. β-Carotene
+{
+  id: 'bcarotene',
+  name: 'β-Carotene',
+  formula: 'C₄₀H₅₆',
+  mw: '536.87 g/mol',
+  category: 'organic',
+  year: '1831',
+  desc: 'An orange pigment and provitamin A found in carrots, sweet potato, and leafy greens. The molecule is cleaved by the body to yield two molecules of vitamin A.',
+  atoms: (function(){
+    const atoms = [];
+    // Linear chain
+    for(let i=0;i<36;i++){
+      const x = (i-18)*0.7;
+      const y = (i%2===0?0.2:-0.2) + Math.sin(i*0.35)*0.2;
+      atoms.push({el:'C', x, y, z:0});
+    }
+    // Two ionone ring ends
+    const ringL = [[-14.5, 1.2],[-15.5, 0.5],[-15.5, -0.5],[-14.5,-1.2],[-13.5,-0.3]];
+    const ringR = [[14.5, 1.2],[15.5, 0.5],[15.5, -0.5],[14.5,-1.2],[13.5,-0.3]];
+    ringL.forEach(([x,y]) => atoms.push({el:'C', x, y, z:0}));
+    ringR.forEach(([x,y]) => atoms.push({el:'C', x, y, z:0}));
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    for(let i=0;i<35;i++) bonds.push([i,i+1]);
+    // rings
+    const lBase=36, rBase=41;
+    for(let i=0;i<4;i++) bonds.push([lBase+i, lBase+i+1]);
+    bonds.push([lBase+4, lBase],[lBase+4, 0]);
+    for(let i=0;i<4;i++) bonds.push([rBase+i, rBase+i+1]);
+    bonds.push([rBase+4, rBase],[rBase+4, 35]);
+    return bonds;
+  })()
+},
+
+// 8. Porphyrin
+{
+  id: 'porphyrin',
+  name: 'Porphyrin',
+  formula: 'C₂₀H₁₄N₄',
+  mw: '310.35 g/mol',
+  category: 'organic',
+  year: '1912',
+  desc: 'A planar aromatic macrocycle formed by four pyrrole rings linked by methine bridges. The free-base porphyrin is the backbone of heme, chlorophyll, and vitamin B12.',
+  atoms: (function(){
+    const atoms = [];
+    // 4 N atoms
+    for(let i=0;i<4;i++){
+      const a = i*Math.PI/2+Math.PI/4;
+      atoms.push({el:'N', x:1.4*Math.cos(a), y:0, z:1.4*Math.sin(a)});
+    }
+    // 20 C in macrocycle
+    for(let i=0;i<20;i++){
+      const a = i*2*Math.PI/20;
+      atoms.push({el:'C', x:3.0*Math.cos(a), y:0, z:3.0*Math.sin(a)});
+    }
+    // 2 NH hydrogen (inner)
+    atoms.push({el:'H', x:0, y:0, z:2.2});
+    atoms.push({el:'H', x:0, y:0, z:-2.2});
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    // N to ring C
+    [0,1,2,3].forEach((n,i) => {
+      bonds.push([n, 4+i*5]);
+      bonds.push([n, 4+i*5+4]);
+    });
+    // C ring
+    for(let i=0;i<19;i++) bonds.push([4+i, 5+i]);
+    bonds.push([23,4]);
+    bonds.push([0,24],[2,25]);
+    return bonds;
+  })()
+},
+
+// 9. Vitamin B12
+{
+  id: 'b12',
+  name: 'Vitamin B12 (Cobalamin)',
+  formula: 'C₆₃H₈₈CoN₁₄O₁₄P',
+  mw: '1355.37 g/mol',
+  category: 'biomolecule',
+  year: '1948',
+  desc: 'The most structurally complex vitamin, featuring a cobalt-centred corrin ring. Essential for nerve function and red blood cell formation — uniquely synthesized only by bacteria.',
+  atoms: (function(){
+    const atoms = [];
+    // Central Co
+    atoms.push({el:'Co', x:0, y:0, z:0});
+    // Corrin ring (4 N, slightly non-planar)
+    for(let i=0;i<4;i++){
+      const a = i*Math.PI/2+Math.PI/4;
+      atoms.push({el:'N', x:1.4*Math.cos(a), y:0.1*((i%2)-0.5), z:1.4*Math.sin(a)});
+    }
+    // Corrin C atoms
+    for(let i=0;i<19;i++){
+      const a = i*2*Math.PI/19;
+      const r = 2.8 + 0.2*Math.sin(i*0.7);
+      atoms.push({el:'C', x:r*Math.cos(a), y:0.2*Math.sin(i), z:r*Math.sin(a)});
+    }
+    // Nucleotide loop (simplified)
+    const loop = [{el:'P',x:-2,y:-2.5,z:0},{el:'O',x:-1,y:-3.2,z:0},
+                  {el:'C',x:0,y:-3.5,z:0},{el:'N',x:1,y:-3.2,z:0.5},
+                  {el:'C',x:1.5,y:-2.5,z:0.3}];
+    loop.forEach(a => atoms.push(a));
+    // Axial ligands
+    atoms.push({el:'N', x:0, y:-2.2, z:0}); // lower histidine N
+    atoms.push({el:'C', x:0, y:2.2, z:0});  // upper CN or OH
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    for(let i=0;i<4;i++) bonds.push([0, 1+i]);
+    for(let i=0;i<18;i++) bonds.push([5+i, 6+i]);
+    bonds.push([23,5]);
+    for(let i=0;i<4;i++) bonds.push([1+i, 24]);
+    bonds.push([24,25],[25,26],[26,27],[27,28],[28,29]);
+    bonds.push([0,30],[0,31]);
+    return bonds;
+  })()
+},
+
+// 10. Insulin (simplified)
+{
+  id: 'insulin',
+  name: 'Insulin',
+  formula: 'C₂₅₇H₃₈₃N₆₅O₇₇S₆',
+  mw: '5807.63 g/mol',
+  category: 'biomolecule',
+  year: '1921',
+  desc: 'A peptide hormone produced by the pancreas that regulates blood glucose. Composed of 51 amino acids in two chains linked by two disulfide bonds — the first protein to be sequenced.',
+  atoms: (function(){
+    const atoms = [];
+    // Chain A (21 amino acids) — alpha helix representation
+    for(let i=0;i<21;i++){
+      const a = i*100*Math.PI/180;
+      const r = 1.8;
+      atoms.push({el:'C', x:r*Math.cos(a), y:i*0.54-5.5, z:r*Math.sin(a)});
+      atoms.push({el:'N', x:(r+0.5)*Math.cos(a+0.5), y:i*0.54-5.3, z:(r+0.5)*Math.sin(a+0.5)});
+      atoms.push({el:'O', x:(r+0.5)*Math.cos(a-0.5), y:i*0.54-5.7, z:(r+0.5)*Math.sin(a-0.5)});
+    }
+    // Chain B (30 amino acids) — offset
+    for(let i=0;i<30;i++){
+      const a = i*100*Math.PI/180 + Math.PI;
+      const r = 1.8;
+      atoms.push({el:'C', x:r*Math.cos(a)+4, y:i*0.5-7, z:r*Math.sin(a)});
+      atoms.push({el:'N', x:(r+0.5)*Math.cos(a+0.5)+4, y:i*0.5-6.8, z:(r+0.5)*Math.sin(a+0.5)});
+    }
+    // Disulfide bonds (S atoms)
+    atoms.push({el:'S', x:1.5, y:-2, z:0});
+    atoms.push({el:'S', x:5.5, y:-2, z:0});
+    atoms.push({el:'S', x:1.5, y:3, z:0});
+    atoms.push({el:'S', x:1.5, y:5, z:0});
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    for(let i=0;i<20;i++) bonds.push([i*3, i*3+3]);
+    for(let i=0;i<20;i++){bonds.push([i*3,i*3+1]);bonds.push([i*3,i*3+2]);}
+    const b2 = 63;
+    for(let i=0;i<29;i++) bonds.push([b2+i*2, b2+i*2+2]);
+    bonds.push([b2+60, b2+61]);  // S-S disulfide
+    bonds.push([b2+62, b2+63]);
+    return bonds;
+  })()
+},
+
+// 11. Graphene Fragment
+{
+  id: 'graphene',
+  name: 'Graphene Fragment',
+  formula: 'C₅₄H₁₈',
+  mw: '666.72 g/mol',
+  category: 'carbon',
+  year: '2004',
+  desc: 'A single-atom-thick hexagonal lattice of carbon — the thinnest, strongest, and most electrically conductive material known. Nobel Prize in Physics 2010.',
+  atoms: (function(){
+    const atoms = [];
+    const a = 1.42; // C-C bond length in graphene
+    // Honeycomb lattice patch
+    const rows = 5, cols = 6;
+    for(let r=0;r<rows;r++){
+      for(let c=0;c<cols;c++){
+        const x = c*a*Math.sqrt(3) + (r%2)*a*Math.sqrt(3)/2 - cols*a*Math.sqrt(3)/2;
+        const y = 0;
+        const z = r*a*1.5 - rows*a*0.75;
+        atoms.push({el:'C', x, y, z});
+        // Zigzag partner
+        atoms.push({el:'C', x, y:0.1, z:z+a});
+      }
+    }
+    return atoms.slice(0,54);
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    const thresh = 1.55;
+    return []; // auto-computed
+  })(),
+  autoBonds: true,
+  bondThreshold: 1.55
+},
+
+// 12. Cubane
+{
+  id: 'cubane',
+  name: 'Cubane',
+  formula: 'C₈H₈',
+  mw: '104.15 g/mol',
+  category: 'organic',
+  year: '1964',
+  desc: 'An extraordinary cage molecule — 8 carbon atoms at the vertices of a perfect cube with 90° bond angles, violating normal sp³ geometry. Synthesized by Philip Eaton and Thomas Cole.',
+  atoms: [
+    // 8 C at cube vertices
+    {el:'C',x: 1,y: 1,z: 1},
+    {el:'C',x:-1,y: 1,z: 1},
+    {el:'C',x:-1,y:-1,z: 1},
+    {el:'C',x: 1,y:-1,z: 1},
+    {el:'C',x: 1,y: 1,z:-1},
+    {el:'C',x:-1,y: 1,z:-1},
+    {el:'C',x:-1,y:-1,z:-1},
+    {el:'C',x: 1,y:-1,z:-1},
+    // 8 H outward
+    {el:'H',x: 1.8,y: 1.8,z: 1.8},
+    {el:'H',x:-1.8,y: 1.8,z: 1.8},
+    {el:'H',x:-1.8,y:-1.8,z: 1.8},
+    {el:'H',x: 1.8,y:-1.8,z: 1.8},
+    {el:'H',x: 1.8,y: 1.8,z:-1.8},
+    {el:'H',x:-1.8,y: 1.8,z:-1.8},
+    {el:'H',x:-1.8,y:-1.8,z:-1.8},
+    {el:'H',x: 1.8,y:-1.8,z:-1.8},
+  ],
+  bonds: [
+    // cube edges
+    [0,1],[1,2],[2,3],[3,0], // top
+    [4,5],[5,6],[6,7],[7,4], // bottom
+    [0,4],[1,5],[2,6],[3,7], // verticals
+    // H bonds
+    [0,8],[1,9],[2,10],[3,11],[4,12],[5,13],[6,14],[7,15]
+  ]
+},
+
+// 13. Ferrocene
+{
+  id: 'ferrocene',
+  name: 'Ferrocene',
+  formula: 'C₁₀H₁₀Fe',
+  mw: '186.04 g/mol',
+  category: 'organometallic',
+  year: '1951',
+  desc: 'The archetypal sandwich compound — an iron atom nestled between two cyclopentadienyl rings. Its discovery in 1951 launched the field of organometallic chemistry.',
+  atoms: (function(){
+    const atoms = [];
+    const r = 2.05;
+    // Top Cp ring
+    for(let i=0;i<5;i++){
+      const a = i*2*Math.PI/5;
+      atoms.push({el:'C', x:r*Math.cos(a), y:1.65, z:r*Math.sin(a)});
+    }
+    // Bottom Cp ring (staggered 36°)
+    for(let i=0;i<5;i++){
+      const a = i*2*Math.PI/5 + Math.PI/5;
+      atoms.push({el:'C', x:r*Math.cos(a), y:-1.65, z:r*Math.sin(a)});
+    }
+    // Fe centre
+    atoms.push({el:'Fe', x:0, y:0, z:0});
+    // H atoms
+    const rh = 3.1;
+    for(let i=0;i<5;i++){
+      const a = i*2*Math.PI/5;
+      atoms.push({el:'H', x:rh*Math.cos(a), y:1.65, z:rh*Math.sin(a)});
+    }
+    for(let i=0;i<5;i++){
+      const a = i*2*Math.PI/5 + Math.PI/5;
+      atoms.push({el:'H', x:rh*Math.cos(a), y:-1.65, z:rh*Math.sin(a)});
+    }
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    // Top ring
+    for(let i=0;i<5;i++) bonds.push([i,(i+1)%5]);
+    // Bottom ring
+    for(let i=0;i<5;i++) bonds.push([5+i,5+(i+1)%5]);
+    // Fe to rings (haptic bonds shown as spoke lines)
+    for(let i=0;i<5;i++){bonds.push([10,i]);bonds.push([10,5+i]);}
+    // H bonds
+    for(let i=0;i<5;i++){bonds.push([i,11+i]);bonds.push([5+i,16+i]);}
+    return bonds;
+  })()
+},
+
+// 14. Taxol (Paclitaxel) — simplified ring system
+{
+  id: 'taxol',
+  name: 'Taxol (Paclitaxel)',
+  formula: 'C₄₇H₅₁NO₁₄',
+  mw: '853.91 g/mol',
+  category: 'biomolecule',
+  year: '1971',
+  desc: 'A potent anticancer drug derived from Pacific yew bark. It stabilises microtubules, preventing cell division. One of the most important cancer medicines ever discovered.',
+  atoms: (function(){
+    const atoms = [];
+    // Taxane core ring system (3 fused rings)
+    // 6-membered ring A
+    for(let i=0;i<6;i++){
+      const a = i*Math.PI/3;
+      atoms.push({el:'C', x:2*Math.cos(a)-2, y:0, z:2*Math.sin(a)});
+    }
+    // 8-membered ring B (central)
+    for(let i=0;i<8;i++){
+      const a = i*Math.PI/4;
+      atoms.push({el:'C', x:2.8*Math.cos(a), y:0.3*Math.sin(i), z:2.8*Math.sin(a)});
+    }
+    // 6-membered ring C
+    for(let i=0;i<6;i++){
+      const a = i*Math.PI/3;
+      atoms.push({el:'C', x:2*Math.cos(a)+2, y:0.2, z:2*Math.sin(a)});
+    }
+    // Key O atoms
+    [{x:-2,y:1.5,z:0},{x:0,y:1.5,z:2},{x:2,y:1.5,z:0},{x:0,y:1.5,z:-2},
+     {x:-1,y:-1.5,z:1},{x:1,y:-1.5,z:-1}].forEach(p => atoms.push({el:'O',...p}));
+    // N atom
+    atoms.push({el:'N', x:0, y:2.5, z:0});
+    // Side chain carbons
+    [{x:0,y:3.5,z:0},{x:0.8,y:4.2,z:0},{x:-0.8,y:4.2,z:0},{x:0,y:5,z:0}].forEach(p => atoms.push({el:'C',...p}));
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    for(let i=0;i<5;i++) bonds.push([i,i+1]);
+    bonds.push([5,0]);
+    for(let i=6;i<13;i++) bonds.push([i,i+1]);
+    bonds.push([13,6],[0,7],[5,13]);
+    for(let i=14;i<19;i++) bonds.push([i,i+1]);
+    bonds.push([19,14],[8,14],[13,19]);
+    bonds.push([20,0],[21,4],[22,11],[23,16],[24,3],[25,9]);
+    bonds.push([26,22],[26,27],[26,28],[27,29]);
+    return bonds;
+  })()
+},
+
+// 15. Tetraphenylmethane
+{
+  id: 'tetraphenyl',
+  name: 'Tetraphenylmethane',
+  formula: 'C₂₅H₂₀',
+  mw: '320.43 g/mol',
+  category: 'organic',
+  year: '1900',
+  desc: 'A central carbon atom with four phenyl groups arranged in tetrahedral geometry — a propeller-like molecule used in organic chemistry and as a scaffold for functional materials.',
+  atoms: (function(){
+    const atoms = [];
+    // Central C
+    atoms.push({el:'C', x:0, y:0, z:0});
+    // 4 phenyl groups in tetrahedral directions
+    const dirs = [
+      [1,1,1], [-1,-1,1], [-1,1,-1], [1,-1,-1]
+    ].map(d => { const n=Math.sqrt(3); return d.map(v=>v/n); });
+    dirs.forEach(([dx,dy,dz]) => {
+      // Bridge C
+      const bx=dx*1.5, by=dy*1.5, bz=dz*1.5;
+      atoms.push({el:'C', x:bx, y:by, z:bz});
+      // 6 ring carbons — create local ring perpendicular to direction
+      const perp1 = [dy-dz, dz-dx, dx-dy]; // cross approx
+      const len1 = Math.sqrt(perp1.reduce((s,v)=>s+v*v,0))||1;
+      const p1 = perp1.map(v=>v/len1);
+      const p2 = [dy*p1[2]-dz*p1[1], dz*p1[0]-dx*p1[2], dx*p1[1]-dy*p1[0]];
+      for(let i=0;i<6;i++){
+        const a = i*Math.PI/3;
+        const r = 1.4;
+        atoms.push({el:'C',
+          x: bx+dx*0.5+r*(Math.cos(a)*p1[0]+Math.sin(a)*p2[0]),
+          y: by+dy*0.5+r*(Math.cos(a)*p1[1]+Math.sin(a)*p2[1]),
+          z: bz+dz*0.5+r*(Math.cos(a)*p1[2]+Math.sin(a)*p2[2])
+        });
+      }
+    });
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    // Central to bridge Cs
+    [1,8,15,22].forEach(i => bonds.push([0,i]));
+    // Each phenyl group: bridge + ring
+    [[1,2],[8,9],[15,16],[22,23]].forEach(([br,rs]) => {
+      bonds.push([br,rs]);
+      for(let i=0;i<5;i++) bonds.push([rs+i, rs+i+1]);
+      bonds.push([rs+5, rs]);
+    });
+    return bonds;
+  })()
+},
+
+// 16. Adamantane
+{
+  id: 'adamantane',
+  name: 'Adamantane',
+  formula: 'C₁₀H₁₆',
+  mw: '136.23 g/mol',
+  category: 'organic',
+  year: '1933',
+  desc: 'The smallest diamondoid — 10 carbons arranged in a diamond-lattice cage with perfect tetrahedral geometry. Extremely stable and used as a scaffold for drug delivery.',
+  atoms: [
+    // 4 CH vertices
+    {el:'C',x: 1.5,y: 1.5,z: 1.5},
+    {el:'C',x:-1.5,y:-1.5,z: 1.5},
+    {el:'C',x:-1.5,y: 1.5,z:-1.5},
+    {el:'C',x: 1.5,y:-1.5,z:-1.5},
+    // 6 CH2 bridge
+    {el:'C',x: 0,y: 2.4,z: 0},
+    {el:'C',x: 2.4,y: 0,z: 0},
+    {el:'C',x: 0,y: 0,z: 2.4},
+    {el:'C',x:-2.4,y: 0,z: 0},
+    {el:'C',x: 0,y:-2.4,z: 0},
+    {el:'C',x: 0,y: 0,z:-2.4},
+    // H atoms (simplified — one per CH vertex)
+    {el:'H',x: 2.4,y: 2.4,z: 2.4},
+    {el:'H',x:-2.4,y:-2.4,z: 2.4},
+    {el:'H',x:-2.4,y: 2.4,z:-2.4},
+    {el:'H',x: 2.4,y:-2.4,z:-2.4},
+  ],
+  bonds: [
+    [0,4],[0,5],[0,6],
+    [1,6],[1,7],[1,8],
+    [2,4],[2,7],[2,9],
+    [3,5],[3,8],[3,9],
+    [4,0],[4,2],[5,0],[5,3],[6,0],[6,1],
+    [7,1],[7,2],[8,1],[8,3],[9,2],[9,3],
+    [0,10],[1,11],[2,12],[3,13]
+  ]
+},
+
+// 17. Cyclodextrin (β, 7 glucose units)
+{
+  id: 'cyclodextrin',
+  name: 'β-Cyclodextrin',
+  formula: 'C₄₂H₇₀O₃₅',
+  mw: '1134.98 g/mol',
+  category: 'organic',
+  year: '1891',
+  desc: 'A cyclic oligosaccharide of 7 glucose units forming a truncated cone with a hydrophobic interior cavity. Widely used in pharmaceuticals to encapsulate and solubilise drug molecules.',
+  atoms: (function(){
+    const atoms = [];
+    const n = 7; // glucose units
+    for(let i=0;i<n;i++){
+      const a = i*2*Math.PI/n;
+      const cx = 4.5*Math.cos(a), cz = 4.5*Math.sin(a);
+      // 6 C per glucose unit (simplified ring)
+      for(let j=0;j<6;j++){
+        const b = j*Math.PI/3;
+        atoms.push({el:'C', x:cx+0.9*Math.cos(b), y:j<3?0.5:-0.5, z:cz+0.9*Math.sin(b)});
+      }
+      // O linking
+      atoms.push({el:'O', x:cx, y:0, z:cz});
+      // O in ring
+      atoms.push({el:'O', x:cx+0.5*Math.cos(a+0.5), y:0.3, z:cz+0.5*Math.sin(a+0.5)});
+      // OH groups
+      atoms.push({el:'O', x:cx+1.5*Math.cos(a), y:1.2, z:cz+1.5*Math.sin(a)});
+      atoms.push({el:'O', x:cx+1.5*Math.cos(a+Math.PI), y:-1.2, z:cz+1.5*Math.sin(a+Math.PI)});
+    }
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    const n=7, perUnit=10;
+    for(let i=0;i<n;i++){
+      const base = i*perUnit;
+      for(let j=0;j<5;j++) bonds.push([base+j, base+j+1]);
+      bonds.push([base+5, base]);
+      bonds.push([base, base+6],[base+1, base+7],[base+2, base+8],[base+3, base+9]);
+      // Inter-glucose glycosidic O
+      bonds.push([base+6, ((i+1)%n)*perUnit]);
+    }
+    return bonds;
+  })()
+},
+
+// 18. Phthalocyanine
+{
+  id: 'phthalocyanine',
+  name: 'Phthalocyanine',
+  formula: 'C₃₂H₁₈N₈',
+  mw: '514.54 g/mol',
+  category: 'organic',
+  year: '1907',
+  desc: 'A planar aromatic macrocycle with an 18π-electron conjugated system. Intensely blue-green pigments (PB15, PG7) used in paints, inks, and as photosensitisers in photodynamic therapy.',
+  atoms: (function(){
+    const atoms = [];
+    // 4 isoindole units + central N4 cavity
+    for(let q=0;q<4;q++){
+      const qa = q*Math.PI/2;
+      // Isoindole benzene ring (4 C)
+      for(let i=0;i<4;i++){
+        const a = qa + i*Math.PI/2*0.6 - 0.3;
+        atoms.push({el:'C', x:5.5*Math.cos(a), y:0, z:5.5*Math.sin(a)});
+      }
+      // Pyrrole N
+      atoms.push({el:'N', x:2.5*Math.cos(qa+Math.PI/4), y:0, z:2.5*Math.sin(qa+Math.PI/4)});
+      // Aza-bridge N
+      atoms.push({el:'N', x:3.5*Math.cos(qa), y:0, z:3.5*Math.sin(qa)});
+    }
+    // Inner cavity atoms (2 NH)
+    atoms.push({el:'N', x:0, y:0, z:1.4});
+    atoms.push({el:'N', x:0, y:0, z:-1.4});
+    atoms.push({el:'N', x:1.4, y:0, z:0});
+    atoms.push({el:'N', x:-1.4, y:0, z:0});
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    const qBase = [0,6,12,18];
+    qBase.forEach((b,q) => {
+      for(let i=0;i<3;i++) bonds.push([b+i, b+i+1]);
+      bonds.push([b+4, b+3]);
+      // Connect isoindole to cavity
+      bonds.push([b+4, 24+q]);
+      bonds.push([b+5, 24+(q+1)%4]);
+    });
+    // Aza bridges
+    for(let q=0;q<4;q++){
+      bonds.push([qBase[q]+5, qBase[(q+1)%4]+4]);
+    }
+    // Inner N-N ring
+    bonds.push([24,26],[26,25],[25,27],[27,24]);
+    return bonds;
+  })()
+},
+
+// 19. PAMAM Dendrimer G1
+{
+  id: 'pamam',
+  name: 'PAMAM Dendrimer (G1)',
+  formula: '(C₂H₅N)core branched',
+  mw: '~1430 g/mol',
+  category: 'organic',
+  year: '1985',
+  desc: 'Generation-1 polyamidoamine dendrimer — a tree-like hyperbranched polymer grown from an ethylenediamine core. Used in drug delivery and gene transfection due to its programmable surface chemistry.',
+  atoms: (function(){
+    const atoms = [];
+    // Core ethylenediamine
+    atoms.push({el:'N', x:0, y:0, z:0});
+    atoms.push({el:'C', x:0.8, y:0, z:0});
+    atoms.push({el:'C', x:1.6, y:0, z:0});
+    atoms.push({el:'N', x:2.4, y:0, z:0});
+    // 4 branches from each terminal N
+    const branchFrom = (cx,cy,cz,angle,depth=0) => {
+      if(depth>1) return;
+      const offsets = [Math.PI/4, -Math.PI/4, 3*Math.PI/4, -3*Math.PI/4];
+      offsets.forEach(da => {
+        const a = angle+da;
+        const bx=cx+2*Math.cos(a), by=cy+2*Math.sin(da)*0.5, bz=cz+2*Math.sin(a);
+        atoms.push({el:'C', x:bx, y:by, z:bz});
+        atoms.push({el:'C', x:bx+0.8*Math.cos(a), y:by, z:bz+0.8*Math.sin(a)});
+        atoms.push({el:'N', x:bx+1.6*Math.cos(a), y:by, z:bz+1.6*Math.sin(a)});
+        atoms.push({el:'O', x:bx-0.5, y:by+0.8, z:bz});
+      });
+    };
+    branchFrom(-0.5,0,0,Math.PI);
+    branchFrom(2.9,0,0,0);
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    bonds.push([0,1],[1,2],[2,3]);
+    let b=4;
+    for(let side=0;side<2;side++){
+      for(let br=0;br<4;br++){
+        const root = side===0?0:3;
+        bonds.push([root,b],[b,b+1],[b+1,b+2],[b,b+3]);
+        b+=4;
+      }
+    }
+    return bonds;
+  })()
+},
+
+// 20. Carbon Nanotube Segment
+{
+  id: 'nanotube',
+  name: 'Carbon Nanotube (5,5)',
+  formula: '(C₁₀)ₙ',
+  mw: '~960 g/mol/nm',
+  category: 'carbon',
+  year: '1991',
+  desc: 'An armchair (5,5) single-walled carbon nanotube — a rolled graphene sheet with extraordinary electrical conductivity, tensile strength exceeding steel, and thermal conductivity.',
+  atoms: (function(){
+    const atoms = [];
+    const n=5, r=3.4, length=12;
+    for(let layer=0;layer<length;layer++){
+      const y = (layer - length/2)*1.22;
+      for(let i=0;i<n;i++){
+        const a1 = i*2*Math.PI/n;
+        const a2 = a1 + Math.PI/n;
+        atoms.push({el:'C', x:r*Math.cos(a1), y, z:r*Math.sin(a1)});
+        atoms.push({el:'C', x:r*Math.cos(a2), y:y+0.61, z:r*Math.sin(a2)});
+      }
+    }
+    return atoms;
+  })(),
+  bonds: (function(){
+    const bonds = [];
+    const n=5;
+    for(let layer=0;layer<12;layer++){
+      const base = layer*n*2;
+      for(let i=0;i<n;i++){
+        // Within-layer bonds
+        bonds.push([base+i*2, base+i*2+1]);
+        // Between pairs in same layer
+        bonds.push([base+i*2+1, base+(i+1)%n*2]);
+        // Layer to next layer
+        if(layer<11) bonds.push([base+i*2, base+n*2+i*2]);
+      }
+    }
+    return bonds;
+  })()
+}
+
+]; // end MOLECULES
+
+// ============================================================
+//  PRE-COMPUTE AUTO-BONDS (once at load, not per frame)
+// ============================================================
+MOLECULES.forEach(m => {
+  if(m.autoBonds) {
+    const thresh = m.bondThreshold || 1.65;
+    const atoms = m.atoms;
+    const bonds = [];
+    for(let i=0;i<atoms.length;i++){
+      for(let j=i+1;j<atoms.length;j++){
+        const dx=atoms[i].x-atoms[j].x, dy=atoms[i].y-atoms[j].y, dz=atoms[i].z-atoms[j].z;
+        if(Math.sqrt(dx*dx+dy*dy+dz*dz) < thresh) bonds.push([i,j]);
+      }
+    }
+    m.bonds = bonds;
+    m.autoBonds = false; // mark as done
+  }
+});
+const CPK = {
+  C:'#8a9bb5', H:'#e8edf5', O:'#ff4d4d', N:'#4facfe',
+  S:'#f5c518', P:'#ff8c42', Fe:'#e08040', Mg:'#34d399',
+  Co:'#f472b6', Cl:'#34d399', Na:'#a78bfa', Ca:'#60a5fa',
+  DEFAULT:'#c8d6f0'
+};
+
+// Van der Waals radii (Å) for space-filling
+const VDW = {
+  H:1.2, C:1.7, N:1.55, O:1.52, S:1.8, P:1.8, F:1.47,
+  Cl:1.75, Fe:1.94, Mg:1.73, Co:1.92, Na:2.27, Ca:1.97,
+  DEFAULT:1.7
+};
+
+// ============================================================
+//  APP STATE
+// ============================================================
+let currentMol = null;
+let displayMode = 'ball-stick'; // 'ball-stick' | 'space-fill'
+let activeFilter = 'all';
+let searchTerm = '';
+
+// 3D rotation
+let rotX = 0.3, rotY = 0.5;
+let isDragging = false;
+let lastX = 0, lastY = 0;
+let zoom = 1.0;
+let animFrame = null;
+let autoRotate = true;
+
+// ============================================================
+//  SIDEBAR
+// ============================================================
+function buildStrip() {
+  const strip = document.getElementById('molStrip');
+  strip.innerHTML = '';
+  const filtered = MOLECULES.filter(m => {
+    const matchCat = activeFilter === 'all' || m.category === activeFilter;
+    const q = searchTerm.toLowerCase();
+    const matchSearch = !q || m.name.toLowerCase().includes(q) || m.formula.toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
+  const catColour = {organic:'var(--cat-organic)',biomolecule:'var(--cat-biomolecule)',carbon:'var(--cat-carbon)',organometallic:'var(--cat-organometallic)'};
+  filtered.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'mol-card' + (currentMol && currentMol.id === m.id ? ' active' : '');
+    div.innerHTML = `
+      <div class="mol-card-symbol">${m.name}</div>
+      <div class="mol-card-formula">${m.formula}</div>
+      <span class="mol-card-dot" style="background:${catColour[m.category]}"></span>
+    `;
+    div.onclick = () => selectMolecule(m);
+    strip.appendChild(div);
+  });
+  // Scroll active card into view
+  if(currentMol) {
+    const activeCard = strip.querySelector('.mol-card.active');
+    if(activeCard) activeCard.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+  }
+}
+
+// Keep old name as alias for filter/search calls
+function buildList() { buildStrip(); }
+
+function setFilter(f) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.className = 'filter-btn';
+    if(b.id === 'f-all' && f==='all') {b.style.color='var(--text)';b.style.borderColor='var(--accent)';}
+    else {b.style.color='';b.style.borderColor='';}
+  });
+  const btn = document.getElementById('f-'+f);
+  if(btn && f!=='all') btn.classList.add('active-'+f);
+  if(f==='all'){
+    const allBtn=document.getElementById('f-all');
+    allBtn.style.color='var(--accent)';allBtn.style.borderColor='var(--accent)';
+  }
+  buildList();
+}
+
+function filterList() {
+  searchTerm = document.getElementById('searchBox').value;
+  buildList();
+}
+
+// ============================================================
+//  MOLECULE SELECTION
+// ============================================================
+function selectMolecule(m) {
+  currentMol = m;
+  autoRotate = true;
+  buildList();
+  updateDetail();
+  startRender();
+}
+
+function updateDetail() {
+  const m = currentMol;
+  document.getElementById('noMol').classList.add('hidden');
+  document.getElementById('emptyPanel').classList.add('hidden');
+  document.getElementById('detailInner').classList.remove('hidden');
+
+  document.getElementById('dName').textContent = m.name;
+  document.getElementById('dFormula').innerHTML = m.formula;
+  document.getElementById('dDesc').textContent = m.desc;
+  document.getElementById('dMW').textContent = m.mw;
+  document.getElementById('dCat').textContent = {
+    organic:'Organic', biomolecule:'Biomolecule',
+    carbon:'Carbon Allotrope', organometallic:'Organometallic'
+  }[m.category];
+  document.getElementById('dYear').textContent = m.year;
+
+  // Atom counts
+  const counts = {};
+  m.atoms.forEach(a => { counts[a.el] = (counts[a.el]||0)+1; });
+  const ac = document.getElementById('atomCounts');
+  ac.innerHTML = '';
+  Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([el,n]) => {
+    const chip = document.createElement('div');
+    chip.className = 'atom-chip';
+    chip.innerHTML = `<div class="atom-dot" style="background:${CPK[el]||CPK.DEFAULT}"></div>${el}&nbsp;${n}`;
+    ac.appendChild(chip);
+  });
+
+  // HUD
+  document.getElementById('atomsBadge').textContent = m.atoms.length + ' ATOMS';
+  document.getElementById('bondsBadge').textContent = (m.bonds.length||'~') + ' BONDS';
+}
+
+// ============================================================
+//  3D RENDERER
+// ============================================================
+const canvas = document.getElementById('molCanvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  const wrap = document.getElementById('viewerWrap');
+  canvas.width = wrap.clientWidth * window.devicePixelRatio;
+  canvas.height = wrap.clientHeight * window.devicePixelRatio;
+  canvas.style.width = wrap.clientWidth + 'px';
+  canvas.style.height = wrap.clientHeight + 'px';
+}
+
+function rotatePoint(x,y,z, rx,ry) {
+  // Rotate Y then X
+  let tx = x*Math.cos(ry) + z*Math.sin(ry);
+  let tz = -x*Math.sin(ry) + z*Math.cos(ry);
+  let ty = y*Math.cos(rx) - tz*Math.sin(rx);
+  let tz2 = y*Math.sin(rx) + tz*Math.cos(rx);
+  return [tx, ty, tz2];
+}
+
+function getAutoBonds(atoms, threshold) {
+  const bonds = [];
+  for(let i=0;i<atoms.length;i++){
+    for(let j=i+1;j<atoms.length;j++){
+      const dx=atoms[i].x-atoms[j].x, dy=atoms[i].y-atoms[j].y, dz=atoms[i].z-atoms[j].z;
+      const d=Math.sqrt(dx*dx+dy*dy+dz*dz);
+      if(d < threshold) bonds.push([i,j]);
+    }
+  }
+  return bonds;
+}
+
+function render() {
+  if(!currentMol) return;
+
+  resizeCanvas();
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2;
+
+  ctx.clearRect(0,0,W,H);
+
+  const m = currentMol;
+  const atoms = m.atoms;
+  const bonds = m.bonds;
+
+  // Compute bounding box to auto-scale
+  let maxR = 0;
+  atoms.forEach(a => { const r=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z); if(r>maxR)maxR=r; });
+  const baseScale = Math.min(W,H) / Math.max(maxR*2.8, 1) * zoom;
+
+  // Project all atoms
+  const projected = atoms.map(a => {
+    const [px,py,pz] = rotatePoint(a.x, a.y, a.z, rotX, rotY);
+    const screenX = cx + px * baseScale;
+    const screenY = cy - py * baseScale;
+    // Depth: -1 (back) to +1 (front)
+    const depthMax = maxR || 1;
+    const depth = pz / depthMax; // -1..1
+    return {x:screenX, y:screenY, z:pz, depth, el:a.el};
+  });
+
+  // Sort by depth (back to front)
+  const indices = projected.map((_,i)=>i).sort((a,b)=>projected[a].depth-projected[b].depth);
+
+  // Draw bonds first (ball-stick only)
+  if(displayMode === 'ball-stick') {
+    bonds.forEach(([i,j]) => {
+      if(i>=projected.length||j>=projected.length) return;
+      const pa = projected[i], pb = projected[j];
+      const depthMid = (pa.depth+pb.depth)/2;
+      const alpha = 0.3 + 0.4*(depthMid+1)/2;
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y);
+      ctx.lineTo(pb.x, pb.y);
+      ctx.strokeStyle = `rgba(90,102,128,${alpha})`;
+      ctx.lineWidth = Math.max(0.8, (1.5+depthMid)*window.devicePixelRatio*0.6);
+      ctx.stroke();
+    });
+  }
+
+  // Draw atoms
+  indices.forEach(i => {
+    const p = projected[i];
+    const col = CPK[p.el] || CPK.DEFAULT;
+    const depth01 = (p.depth+1)/2; // 0=back, 1=front
+
+    let baseR;
+    if(displayMode === 'space-fill') {
+      const vdw = VDW[p.el] || VDW.DEFAULT;
+      baseR = vdw * baseScale * 0.45;
+    } else {
+      const sizeMap = {H:0.25, C:0.38, N:0.38, O:0.38, S:0.45, P:0.45, Fe:0.55, Mg:0.5, Co:0.52};
+      baseR = (sizeMap[p.el]||0.38) * baseScale;
+    }
+
+    const r = baseR * (0.55 + 0.45*depth01);
+    const alpha = 0.4 + 0.6*depth01;
+
+    // Parse colour for alpha version
+    const parseHex = h => {
+      const v = parseInt(h.slice(1),16);
+      return [(v>>16)&255,(v>>8)&255,v&255];
+    };
+    const [cr,cg,cb] = parseHex(col);
+
+    // Back glow / shadow
+    if(depth01 < 0.5) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r*1.2, 0, 2*Math.PI);
+      ctx.fillStyle = `rgba(${cr},${cg},${cb},${alpha*0.15})`;
+      ctx.fill();
+    }
+
+    // Main sphere
+    const grad = ctx.createRadialGradient(
+      p.x - r*0.25, p.y - r*0.25, r*0.05,
+      p.x, p.y, r
+    );
+    const brightR = Math.min(255,cr+80), brightG=Math.min(255,cg+80), brightB=Math.min(255,cb+80);
+    const darkR = Math.max(0,cr-60), darkG=Math.max(0,cg-60), darkB=Math.max(0,cb-60);
+    grad.addColorStop(0, `rgba(${brightR},${brightG},${brightB},${alpha})`);
+    grad.addColorStop(0.6, `rgba(${cr},${cg},${cb},${alpha})`);
+    grad.addColorStop(1, `rgba(${darkR},${darkG},${darkB},${alpha*0.8})`);
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, 2*Math.PI);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Specular highlight
+    if(depth01 > 0.3) {
+      ctx.beginPath();
+      ctx.arc(p.x - r*0.3, p.y - r*0.3, r*0.25, 0, 2*Math.PI);
+      ctx.fillStyle = `rgba(255,255,255,${0.15*depth01})`;
+      ctx.fill();
+    }
+
+    // Element label (ball-stick, not too small)
+    if(displayMode === 'ball-stick' && r > 8 * window.devicePixelRatio) {
+      ctx.fillStyle = `rgba(255,255,255,${alpha*0.9})`;
+      ctx.font = `bold ${Math.round(r*0.7)}px 'Space Mono', monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(p.el, p.x, p.y);
+    }
+  });
+
+  // Cache for tooltip hit-testing
+  lastProjected = projected;
+  lastBaseScale = baseScale;
+}
+
+// ============================================================
+//  TOOLTIP INTERACTION
+// ============================================================
+canvas.addEventListener('mousemove', e => {
+  if(isDragging) { hideTooltip(); return; }
+  const hit = hitTest(e.clientX, e.clientY);
+  if(hit) showTooltip(e.clientX, e.clientY, hit);
+  else hideTooltip();
+});
+
+canvas.addEventListener('mouseleave', hideTooltip);
+
+canvas.addEventListener('touchend', e => {
+  if(isDragging) return;
+  const t = e.changedTouches[0];
+  const hit = hitTest(t.clientX, t.clientY);
+  if(hit) {
+    showTooltip(t.clientX, t.clientY, hit);
+    setTimeout(hideTooltip, 2000);
+  }
+}, {passive:true});
+
+// Cache last projected atoms for hit-testing
+let lastProjected = [];
+let lastBaseScale = 1;
+
+function hitTest(clientX, clientY) {
+  if(!currentMol || !lastProjected.length) return null;
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const mx = (clientX - rect.left) * dpr;
+  const my = (clientY - rect.top) * dpr;
+  let best = null, bestDist = Infinity;
+  lastProjected.forEach((p, i) => {
+    const sizeMap = {H:0.25,C:0.38,N:0.38,O:0.38,S:0.45,P:0.45,Fe:0.55,Mg:0.5,Co:0.52};
+    const r = (sizeMap[p.el]||0.38) * lastBaseScale * (0.55+0.45*(p.depth+1)/2);
+    const dx = mx - p.x, dy = my - p.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if(dist < r && dist < bestDist) { bestDist = dist; best = {i, el:p.el}; }
+  });
+  return best;
+}
+
+const ELEMENT_NAMES = {
+  H:'Hydrogen',C:'Carbon',N:'Nitrogen',O:'Oxygen',S:'Sulfur',P:'Phosphorus',
+  Fe:'Iron',Mg:'Magnesium',Co:'Cobalt',Cl:'Chlorine',Na:'Sodium',Ca:'Calcium',
+  F:'Fluorine',Zn:'Zinc',Cu:'Copper',Mn:'Manganese'
+};
+
+function showTooltip(clientX, clientY, hit) {
+  const tooltip = document.getElementById('atomTooltip');
+  const el = hit.el;
+  const name = ELEMENT_NAMES[el] || el;
+  const col = CPK[el] || CPK.DEFAULT;
+  tooltip.innerHTML = `<span style="color:${col}">●</span> ${el} — ${name}<br><span style="color:var(--muted)">ATOM #${hit.i + 1}</span>`;
+  const rect = document.getElementById('viewerWrap').getBoundingClientRect();
+  let tx = clientX - rect.left + 12;
+  let ty = clientY - rect.top - 40;
+  if(tx + 160 > rect.width) tx = clientX - rect.left - 150;
+  if(ty < 0) ty = clientY - rect.top + 12;
+  tooltip.style.left = tx + 'px';
+  tooltip.style.top = ty + 'px';
+  tooltip.classList.add('visible');
+}
+
+function hideTooltip() {
+  document.getElementById('atomTooltip').classList.remove('visible');
+}
+let lastTime = 0;
+function animate(ts) {
+  if(autoRotate) {
+    rotY += 0.007;
+  }
+  render();
+  animFrame = requestAnimationFrame(animate);
+}
+
+function startRender() {
+  if(animFrame) cancelAnimationFrame(animFrame);
+  animFrame = requestAnimationFrame(animate);
+}
+
+function resetView() {
+  rotX = 0.3; rotY = 0.5; zoom = 1.0;
+  autoRotate = true;
+  updateRotateBadge();
+}
+
+function updateRotateBadge() {
+  const badge = document.getElementById('rotateBadge');
+  if(!badge) return;
+  if(autoRotate) {
+    badge.textContent = '● AUTO';
+    badge.style.color = 'var(--accent2)';
+    badge.style.borderColor = 'var(--accent2)';
+  } else {
+    badge.textContent = '◎ MANUAL';
+    badge.style.color = 'var(--muted)';
+    badge.style.borderColor = 'var(--border)';
+  }
+}
+canvas.addEventListener('mousedown', e => {
+  isDragging = true;
+  autoRotate = false;
+  updateRotateBadge();
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+
+window.addEventListener('mousemove', e => {
+  if(!isDragging) return;
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
+  rotY += dx * 0.008;
+  rotX += dy * 0.008;
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
+
+window.addEventListener('mouseup', () => { isDragging = false; });
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  zoom *= e.deltaY > 0 ? 0.92 : 1.09;
+  zoom = Math.max(0.2, Math.min(5, zoom));
+}, {passive:false});
+
+// Touch
+let lastTouchX=0, lastTouchY=0;
+canvas.addEventListener('touchstart', e => {
+  if(e.touches.length===1){
+    isDragging=true; autoRotate=false;
+    updateRotateBadge();
+    lastTouchX=e.touches[0].clientX;
+    lastTouchY=e.touches[0].clientY;
+  }
+}, {passive:true});
+
+canvas.addEventListener('touchmove', e => {
+  if(!isDragging||e.touches.length!==1) return;
+  const dx=e.touches[0].clientX-lastTouchX, dy=e.touches[0].clientY-lastTouchY;
+  rotY+=dx*0.008; rotX+=dy*0.008;
+  lastTouchX=e.touches[0].clientX; lastTouchY=e.touches[0].clientY;
+}, {passive:true});
+
+canvas.addEventListener('touchend', ()=>{isDragging=false;});
+
+// Double-click also resets (desktop convenience)
+canvas.addEventListener('dblclick', resetView);
+
+// ============================================================
+//  MODE TOGGLE
+// ============================================================
+function setMode(mode) {
+  displayMode = mode;
+  document.getElementById('btnBS').classList.toggle('active', mode==='ball-stick');
+  document.getElementById('btnSF').classList.toggle('active', mode==='space-fill');
+  document.getElementById('modeBadge').textContent = mode==='ball-stick' ? 'B & S' : 'FILL';
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+function init() {
+  setFilter('all');
+  window.addEventListener('resize', () => { if(currentMol) render(); });
+  document.getElementById('noMol').classList.remove('hidden');
+}
+
+
+// ============================================================
+//  MOBILE LIST BUILDER
+// ============================================================
+(function buildMobileList() {
+  const container = document.getElementById('mobileList');
+  if (!container) return;
+
+  const CAT_ORDER = [
+    { cat:'organic',        hex:'#4facfe', label:'Organic' },
+    { cat:'biomolecule',    hex:'#34d399', label:'Biomolecules' },
+    { cat:'carbon',         hex:'#8a9bb5', label:'Carbon Allotropes' },
+    { cat:'organometallic', hex:'#f5c518', label:'Organometallic' },
+  ];
+
+  CAT_ORDER.forEach(({ cat, hex, label }) => {
+    const mols = MOLECULES.filter(m => m.category === cat);
+    if (!mols.length) return;
+
+    const section = document.createElement('div');
+    section.className = 'mob-cat-section';
+    section.dataset.cat = cat;
+
+    section.innerHTML = `
+      <div class="mob-cat-heading">
+        <div class="mob-cat-dot" style="background:${hex}"></div>
+        <span class="mob-cat-title">${label}</span>
+        <span class="mob-col-h">Year</span>
+        <span class="mob-col-h mob-col-h-phase">●</span>
+      </div>
+    `;
+
+    mols.forEach(m => {
+      const row = document.createElement('div');
+      row.className = 'mob-el-row';
+      row.dataset.id = m.id;
+      row.innerHTML = `
+        <span class="mob-el-sym" style="color:${hex}">${m.formula.replace(/[₀-₉]/g,'').slice(0,3)}</span>
+        <span class="mob-el-name">${m.name}</span>
+        <span class="mob-el-year">${m.year}</span>
+        <div><span class="mob-el-cat-dot" style="background:${hex}"></span></div>
+      `;
+      row.addEventListener('click', () => openBottomSheet(m));
+      section.appendChild(row);
+    });
+
+    container.appendChild(section);
+  });
+})();
+
+// ============================================================
+//  BOTTOM SHEET
+// ============================================================
+let bsAnimFrame = null;
+let bsRotX = 0.3, bsRotY = 0.5, bsZoom = 1.0;
+let bsDragging = false, bsLastX = 0, bsLastY = 0;
+let bsMol = null;
+
+const bsCanvas = document.getElementById('bsMolCanvas');
+const bsCtx = bsCanvas ? bsCanvas.getContext('2d') : null;
+
+function openBottomSheet(m) {
+  bsMol = m;
+  bsRotX = 0.3; bsRotY = 0.5; bsZoom = 1.0;
+
+  document.getElementById('bsName').textContent = m.name;
+  document.getElementById('bsFormula').innerHTML = m.formula;
+  document.getElementById('bsMW').textContent = m.mw;
+  document.getElementById('bsCat').textContent = {
+    organic:'Organic', biomolecule:'Biomolecule',
+    carbon:'Carbon Allotrope', organometallic:'Organometallic'
+  }[m.category];
+  document.getElementById('bsYear').textContent = m.year;
+  document.getElementById('bsDesc').textContent = m.desc;
+
+  // Atom counts
+  const counts = {};
+  m.atoms.forEach(a => { counts[a.el] = (counts[a.el]||0)+1; });
+  const ac = document.getElementById('bsAtoms');
+  ac.innerHTML = '';
+  Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([el,n]) => {
+    const chip = document.createElement('div');
+    chip.className = 'atom-chip';
+    chip.innerHTML = `<div class="atom-dot" style="background:${CPK[el]||CPK.DEFAULT}"></div>${el} ${n}`;
+    ac.appendChild(chip);
+  });
+
+  document.getElementById('bottomSheet').classList.add('open');
+  setTimeout(startBsRender, 30);
+}
+
+function closeBottomSheet() {
+  document.getElementById('bottomSheet').classList.remove('open');
+  if (bsAnimFrame) { cancelAnimationFrame(bsAnimFrame); bsAnimFrame = null; }
+  bsMol = null;
+}
+
+document.getElementById('bsClose').addEventListener('click', closeBottomSheet);
+
+// Swipe-down to close
+let bsTouchStartY = 0;
+const sheet = document.getElementById('bottomSheet');
+sheet.addEventListener('touchstart', e => { bsTouchStartY = e.touches[0].clientY; }, {passive:true});
+sheet.addEventListener('touchend', e => {
+  const dy = e.changedTouches[0].clientY - bsTouchStartY;
+  if (dy > 80) closeBottomSheet();
+}, {passive:true});
+
+// Canvas interaction
+function bsResizeCanvas() {
+  if (!bsCanvas) return;
+  const wrap = bsCanvas.parentElement;
+  const dpr = window.devicePixelRatio || 1;
+  bsCanvas.width  = wrap.clientWidth  * dpr;
+  bsCanvas.height = wrap.clientHeight * dpr;
+  bsCanvas.style.width  = wrap.clientWidth  + 'px';
+  bsCanvas.style.height = wrap.clientHeight + 'px';
+}
+
+function renderBs() {
+  if (!bsMol || !bsCtx) return;
+  bsResizeCanvas();
+  const W = bsCanvas.width, H = bsCanvas.height;
+  const cx = W/2, cy = H/2;
+  bsCtx.clearRect(0,0,W,H);
+
+  const atoms = bsMol.atoms;
+  const bonds = bsMol.bonds;
+  let maxR = 0;
+  atoms.forEach(a => { const r=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z); if(r>maxR)maxR=r; });
+  const baseScale = Math.min(W,H) / Math.max(maxR*2.8,1) * bsZoom;
+
+  const projected = atoms.map(a => {
+    const [px,py,pz] = rotatePoint(a.x,a.y,a.z, bsRotX, bsRotY);
+    return {x:cx+px*baseScale, y:cy-py*baseScale, z:pz, depth:pz/(maxR||1), el:a.el};
+  });
+  const indices = projected.map((_,i)=>i).sort((a,b)=>projected[a].depth-projected[b].depth);
+
+  // bonds
+  bonds.forEach(([i,j]) => {
+    if(i>=projected.length||j>=projected.length) return;
+    const pa=projected[i], pb=projected[j];
+    const alpha = 0.3+0.4*((pa.depth+pb.depth)/2+1)/2;
+    bsCtx.beginPath();
+    bsCtx.moveTo(pa.x,pa.y);
+    bsCtx.lineTo(pb.x,pb.y);
+    bsCtx.strokeStyle=`rgba(90,102,128,${alpha})`;
+    bsCtx.lineWidth=Math.max(0.8,1.5*(window.devicePixelRatio||1)*0.6);
+    bsCtx.stroke();
+  });
+
+  // atoms
+  indices.forEach(i => {
+    const p=projected[i];
+    const col=CPK[p.el]||CPK.DEFAULT;
+    const depth01=(p.depth+1)/2;
+    const sizeMap={H:0.25,C:0.38,N:0.38,O:0.38,S:0.45,P:0.45,Fe:0.55,Mg:0.5,Co:0.52};
+    const r=(sizeMap[p.el]||0.38)*baseScale*(0.55+0.45*depth01);
+    const alpha=0.4+0.6*depth01;
+    const parseHex=h=>{const v=parseInt(h.slice(1),16);return[(v>>16)&255,(v>>8)&255,v&255];};
+    const [cr,cg,cb]=parseHex(col);
+    const grad=bsCtx.createRadialGradient(p.x-r*0.25,p.y-r*0.25,r*0.05,p.x,p.y,r);
+    grad.addColorStop(0,`rgba(${Math.min(255,cr+80)},${Math.min(255,cg+80)},${Math.min(255,cb+80)},${alpha})`);
+    grad.addColorStop(0.6,`rgba(${cr},${cg},${cb},${alpha})`);
+    grad.addColorStop(1,`rgba(${Math.max(0,cr-60)},${Math.max(0,cg-60)},${Math.max(0,cb-60)},${alpha*0.8})`);
+    bsCtx.beginPath(); bsCtx.arc(p.x,p.y,r,0,2*Math.PI);
+    bsCtx.fillStyle=grad; bsCtx.fill();
+    if(depth01>0.3){
+      bsCtx.beginPath(); bsCtx.arc(p.x-r*0.3,p.y-r*0.3,r*0.25,0,2*Math.PI);
+      bsCtx.fillStyle=`rgba(255,255,255,${0.15*depth01})`; bsCtx.fill();
+    }
+  });
+}
+
+function startBsRender() {
+  if(bsAnimFrame) cancelAnimationFrame(bsAnimFrame);
+  let autoRot = true;
+  function loop() {
+    if(autoRot) bsRotY += 0.008;
+    renderBs();
+    bsAnimFrame = requestAnimationFrame(loop);
+  }
+  bsAnimFrame = requestAnimationFrame(loop);
+
+  // touch drag on bs canvas
+  bsCanvas.addEventListener('touchstart', e => {
+    if(e.touches.length===1){ bsDragging=true; autoRot=false; bsLastX=e.touches[0].clientX; bsLastY=e.touches[0].clientY; }
+  },{passive:true,once:false});
+  bsCanvas.addEventListener('touchmove', e => {
+    if(!bsDragging||e.touches.length!==1) return;
+    bsRotY+=(e.touches[0].clientX-bsLastX)*0.01;
+    bsRotX+=(e.touches[0].clientY-bsLastY)*0.01;
+    bsLastX=e.touches[0].clientX; bsLastY=e.touches[0].clientY;
+  },{passive:true});
+  bsCanvas.addEventListener('touchend',()=>{bsDragging=false;},{passive:true});
+}
+
+init();
+</script>
+</body>
+</html>
