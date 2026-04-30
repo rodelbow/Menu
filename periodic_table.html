@@ -291,11 +291,38 @@ header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-tr
 .panel.open { transform: translateX(0); }
 
 .panel-head {
-  padding: 22px 22px 16px;
   border-bottom: 1px solid var(--border);
   position: relative;
   background: #0b0e17;
   flex-shrink: 0;
+  overflow: hidden;
+  padding: 14px 18px 10px;
+}
+.panel-head-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.panel-head-sym {
+  flex-shrink: 0;
+  line-height: 1;
+}
+.panel-head-text {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+.panel-atom {
+  width: 100%;
+  height: 220px;
+  display: block;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.panel-atom canvas {
+  display: block;
+  width: 100% !important;
+  height: 220px !important;
 }
 .close-btn {
   position: absolute; top: 14px; right: 14px;
@@ -307,12 +334,12 @@ header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-tr
 
 .p-sym {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 4rem;
+  font-size: 3.2rem;
   line-height: 1;
 }
 .p-name { font-size: 1rem; font-weight: 500; color: #fff; margin-top: 2px; }
 .p-meta { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 4px; }
-.p-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.p-badges { display: flex; gap: 6px; padding: 6px 0 4px 0; flex-wrap: nowrap; align-items: center; }
 .badge {
   font-size: 0.6rem; font-family: 'Space Mono', monospace;
   letter-spacing: 0.5px; text-transform: uppercase;
@@ -338,8 +365,9 @@ header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-tr
   font-size: 0.7rem; color: #4facfe; word-break: break-word; line-height: 1.7;
 }
 .phase-pill {
-  display: inline-block; font-size: 0.62rem; font-family: 'Space Mono', monospace;
-  padding: 2px 7px; border-radius: 3px;
+  display: inline-block; font-size: 0.55rem; font-family: 'Space Mono', monospace;
+  padding: 3px 7px; border-radius: 3px;
+  white-space: nowrap;
 }
 .phase-pill.solid   { background:#1e3a5f; color:#60a5fa; }
 .phase-pill.liquid  { background:#1a3d2e; color:#34d399; }
@@ -395,11 +423,20 @@ header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-tr
 <!-- Detail Panel -->
 <div class="panel" id="panel">
   <div class="panel-head">
-    <button class="close-btn" id="closeBtn">✕</button>
-    <div class="p-sym" id="pSym"></div>
-    <div class="p-name" id="pName"></div>
-    <div class="p-meta" id="pMeta"></div>
+    <div class="panel-head-top">
+      <div class="panel-head-sym">
+        <div class="p-sym" id="pSym"></div>
+      </div>
+      <div class="panel-head-text">
+        <button class="close-btn" id="closeBtn">✕</button>
+        <div class="p-name" id="pName"></div>
+        <div class="p-meta" id="pMeta"></div>
+      </div>
+    </div>
     <div class="p-badges" id="pBadges"></div>
+    <div class="panel-atom">
+      <canvas id="atomCanvas" height="220" style="height:220px"></canvas>
+    </div>
   </div>
   <div class="panel-body" id="pBody"></div>
 </div>
@@ -531,6 +568,271 @@ const E = [
   {z:117,s:'Ts', n:'Tennessine',    m:294,     cat:'Unknown',         row:7, col:17, melt:350,    boil:610,    den:7.17,    cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵',disc:2010},
   {z:118,s:'Og', n:'Oganesson',     m:294,     cat:'Unknown',         row:7, col:18, melt:325,    boil:450,    den:5,       cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶',disc:2002},
 ];
+
+
+// ─── ELECTRON SHELLS (Bohr model) ────────────────────────────────────────────
+const SHELLS = {
+  1:[1],2:[2],3:[2,1],4:[2,2],5:[2,3],6:[2,4],7:[2,5],8:[2,6],9:[2,7],10:[2,8],
+  11:[2,8,1],12:[2,8,2],13:[2,8,3],14:[2,8,4],15:[2,8,5],16:[2,8,6],17:[2,8,7],18:[2,8,8],
+  19:[2,8,8,1],20:[2,8,8,2],21:[2,8,9,2],22:[2,8,10,2],23:[2,8,11,2],24:[2,8,13,1],
+  25:[2,8,13,2],26:[2,8,14,2],27:[2,8,15,2],28:[2,8,16,2],29:[2,8,18,1],30:[2,8,18,2],
+  31:[2,8,18,3],32:[2,8,18,4],33:[2,8,18,5],34:[2,8,18,6],35:[2,8,18,7],36:[2,8,18,8],
+  37:[2,8,18,8,1],38:[2,8,18,8,2],39:[2,8,18,9,2],40:[2,8,18,10,2],41:[2,8,18,12,1],
+  42:[2,8,18,13,1],43:[2,8,18,13,2],44:[2,8,18,15,1],45:[2,8,18,16,1],46:[2,8,18,18],
+  47:[2,8,18,18,1],48:[2,8,18,18,2],49:[2,8,18,18,3],50:[2,8,18,18,4],51:[2,8,18,18,5],
+  52:[2,8,18,18,6],53:[2,8,18,18,7],54:[2,8,18,18,8],
+  55:[2,8,18,18,8,1],56:[2,8,18,18,8,2],57:[2,8,18,18,9,2],58:[2,8,18,19,9,2],
+  59:[2,8,18,21,8,2],60:[2,8,18,22,8,2],61:[2,8,18,23,8,2],62:[2,8,18,24,8,2],
+  63:[2,8,18,25,8,2],64:[2,8,18,25,9,2],65:[2,8,18,27,8,2],66:[2,8,18,28,8,2],
+  67:[2,8,18,29,8,2],68:[2,8,18,30,8,2],69:[2,8,18,31,8,2],70:[2,8,18,32,8,2],
+  71:[2,8,18,32,9,2],72:[2,8,18,32,10,2],73:[2,8,18,32,11,2],74:[2,8,18,32,12,2],
+  75:[2,8,18,32,13,2],76:[2,8,18,32,14,2],77:[2,8,18,32,15,2],78:[2,8,18,32,17,1],
+  79:[2,8,18,32,18,1],80:[2,8,18,32,18,2],81:[2,8,18,32,18,3],82:[2,8,18,32,18,4],
+  83:[2,8,18,32,18,5],84:[2,8,18,32,18,6],85:[2,8,18,32,18,7],86:[2,8,18,32,18,8],
+  87:[2,8,18,32,18,8,1],88:[2,8,18,32,18,8,2],89:[2,8,18,32,18,9,2],90:[2,8,18,32,18,10,2],
+  91:[2,8,18,32,20,9,2],92:[2,8,18,32,21,9,2],93:[2,8,18,32,22,9,2],94:[2,8,18,32,24,8,2],
+  95:[2,8,18,32,25,8,2],96:[2,8,18,32,25,9,2],97:[2,8,18,32,27,8,2],98:[2,8,18,32,28,8,2],
+  99:[2,8,18,32,29,8,2],100:[2,8,18,32,30,8,2],101:[2,8,18,32,31,8,2],102:[2,8,18,32,32,8,2],
+  103:[2,8,18,32,32,8,3],104:[2,8,18,32,32,10,2],105:[2,8,18,32,32,11,2],106:[2,8,18,32,32,12,2],
+  107:[2,8,18,32,32,13,2],108:[2,8,18,32,32,14,2],109:[2,8,18,32,32,15,2],110:[2,8,18,32,32,17,1],
+  111:[2,8,18,32,32,18,1],112:[2,8,18,32,32,18,2],113:[2,8,18,32,32,18,3],114:[2,8,18,32,32,18,4],
+  115:[2,8,18,32,32,18,5],116:[2,8,18,32,32,18,6],117:[2,8,18,32,32,18,7],118:[2,8,18,32,32,18,8],
+};
+
+// ─── 3D CANVAS ATOM ENGINE ──────────────────────────────────────────────────
+const ATOM_NEUTRONS = {
+  1:0,2:2,3:4,4:5,5:6,6:6,7:7,8:8,9:10,10:10,
+  11:12,12:12,13:14,14:14,15:16,16:16,17:18,18:22,19:20,20:20,
+  21:24,22:26,23:28,24:28,25:30,26:30,27:32,28:30,29:34,30:35,
+  31:39,32:41,33:42,34:45,35:45,36:48,37:48,38:50,39:50,40:51,
+  41:52,42:54,43:55,44:57,45:58,46:60,47:61,48:64,49:66,50:69,
+  51:71,52:76,53:74,54:77,55:78,56:82,57:82,58:82,59:82,60:84,
+  61:84,62:88,63:89,64:93,65:94,66:96,67:98,68:99,69:100,70:103,
+  71:104,72:106,73:108,74:110,75:111,76:114,77:115,78:117,79:118,80:121,
+  81:123,82:125,83:126,84:125,85:125,86:136,87:136,88:138,89:138,90:142,
+  91:140,92:146,93:144,94:150,95:148,96:151,97:150,98:153,99:153,100:157,
+  101:157,102:157,103:159,104:163,105:163,106:163,107:163,108:169,109:169,110:171,
+  111:171,112:173,113:173,114:175,115:175,116:177,117:177,118:176,
+};
+
+const CAT_HEX = {
+  'var(--c-alkali)':'#ff4d6d','var(--c-alkaline)':'#ff8c42',
+  'var(--c-transition)':'#4facfe','var(--c-post)':'#a78bfa',
+  'var(--c-metalloid)':'#34d399','var(--c-nonmetal)':'#fbbf24',
+  'var(--c-noble)':'#f472b6','var(--c-lanthanide)':'#60a5fa',
+  'var(--c-actinide)':'#f87171','var(--c-unknown)':'#6b7280',
+};
+
+let atomAnimId = null;
+
+function hexToRgbArr(h) {
+  h = CAT_HEX[h] || h;
+  const c = h.replace('#','');
+  return [parseInt(c.slice(0,2),16),parseInt(c.slice(2,4),16),parseInt(c.slice(4,6),16)];
+}
+
+function drawNucleusCanvas(ctx, cx, cy, z) {
+  const n = ATOM_NEUTRONS[z] ?? Math.round(z*1.2);
+  const total = z + n;
+
+  // Particle size shrinks every 10 particles — floor at 1.6, always >> electrons
+  // Fixed at 3.2 for Z<=48 (total<=112), shrinks for heavier elements, floors at 2.2 from Z=72
+  const pr = total <= 112 ? 3.2 :
+             total <= 130 ? 2.7 :
+             total <= 160 ? 2.4 :
+             2.2;
+  const gap = pr * 2.3;
+
+  // Enough shells for 240+ particles (heaviest elements)
+  const shellCfg = [
+    {cap:1,   r:0},
+    {cap:6,   r:gap},
+    {cap:12,  r:gap*1.85},
+    {cap:20,  r:gap*2.65},
+    {cap:26,  r:gap*3.35},
+    {cap:32,  r:gap*4.0},
+    {cap:38,  r:gap*4.6},
+    {cap:44,  r:gap*5.2},
+    {cap:50,  r:gap*5.75},
+    {cap:56,  r:gap*6.25},
+    {cap:62,  r:gap*6.75},
+    {cap:68,  r:gap*7.2},
+  ];
+
+  // Build full particle list — interleave protons and neutrons
+  const particles = [];
+  for(let i=0;i<total;i++) particles.push({isP: i%2===0 ? i/2 < z : (i-1)/2 < n});
+
+  // Better interleave: alternate p/n
+  const pList = Array.from({length:z}, (_,i)=>({isP:true,  idx:i}));
+  const nList = Array.from({length:n}, (_,i)=>({isP:false, idx:i}));
+  const ordered = [];
+  const ml = Math.max(pList.length, nList.length);
+  for(let i=0;i<ml;i++){
+    if(i<pList.length)  ordered.push(pList[i]);
+    if(i<nList.length)  ordered.push(nList[i]);
+  }
+
+  // Assign 3D positions in spherical shells
+  const placed3d = [];
+  let placed = 0;
+  for(const shell of shellCfg){
+    if(placed >= ordered.length) break;
+    const inShell = Math.min(shell.cap, ordered.length - placed);
+    for(let i=0; i<inShell; i++){
+      let x3,y3,z3;
+      if(shell.r === 0){
+        x3=0; y3=0; z3=0;
+      } else {
+        // Distribute evenly on sphere surface using golden angle
+        const phi = Math.acos(1 - 2*(i+0.5)/inShell);
+        const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+        x3 = shell.r * Math.sin(phi) * Math.cos(theta);
+        y3 = shell.r * Math.sin(phi) * Math.sin(theta);
+        z3 = shell.r * Math.cos(phi);
+      }
+      placed3d.push({...ordered[placed], x3, y3, z3});
+      placed++;
+    }
+  }
+
+  // Sort back-to-front by z3
+  placed3d.sort((a,b) => a.z3 - b.z3);
+
+  // Nucleus glow halo
+  // glowR based on outermost occupied shell radius
+  const outerR = shellCfg[Math.min(shellCfg.findIndex((_,i,a)=>a.slice(0,i+1).reduce((s,c)=>s+c.cap,0)>=total||i===a.length-1), shellCfg.length-1)].r;
+  const glowR = outerR + pr * 2.5;
+  const grd = ctx.createRadialGradient(cx,cy,0,cx,cy,glowR);
+  grd.addColorStop(0,'rgba(248,113,113,0.18)');
+  grd.addColorStop(1,'rgba(248,113,113,0)');
+  ctx.beginPath(); ctx.arc(cx,cy,glowR,0,Math.PI*2);
+  ctx.fillStyle=grd; ctx.fill();
+
+  // Draw particles depth-sorted — back ones smaller/dimmer, front ones larger/brighter
+  const maxZ = gap * (shellCfg.length - 1);
+  placed3d.forEach(({x3, y3, z3, isP}) => {
+    const t = (z3 + maxZ) / (2 * maxZ); // 0=back, 1=front
+    const r = pr * (0.65 + 0.5 * t);    // shrinks at back, grows at front
+    const brightness = 0.4 + 0.6 * t;   // dims at back
+
+    const sx = cx + x3;
+    const sy = cy + y3;
+
+    // Colours scaled by depth
+    const pFront='#f87171', pBack='#7f2d2d';
+    const nFront='#94a3b8', nBack='#374151';
+    const col = isP ? (t>0.5?'#f87171':'#c45c5c') : (t>0.5?'#94a3b8':'#4b5563');
+    const lit = isP ? '#fca5a5' : '#cbd5e1';
+
+    const g = ctx.createRadialGradient(sx-r*0.3, sy-r*0.3, 0, sx, sy, r);
+    g.addColorStop(0, `rgba(${isP?'252,165,165':'203,213,225'},${(brightness*0.9).toFixed(2)})`);
+    g.addColorStop(1, col);
+    ctx.globalAlpha = 0.55 + 0.45 * t;
+    ctx.beginPath(); ctx.arc(sx, sy, r, 0, Math.PI*2);
+    ctx.fillStyle = g; ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+
+  // Label below
+  const labelY = cy + glowR + 14;
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#6b7a99';
+  ctx.fillText(`${z}p  ${n}n  ${z}e\u207B`, cx, labelY);
+}
+
+function startAtomCanvas(z, elColorRaw) {
+  if(atomAnimId){cancelAnimationFrame(atomAnimId);atomAnimId=null;}
+  const canvas=document.getElementById('atomCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const hexColor = CAT_HEX[elColorRaw] || elColorRaw;
+  const shells=SHELLS[z]||[];
+  const ns=shells.length;
+  const [er,eg,eb]=hexToRgbArr('#60a5fa');
+  const [cr,cg,cb]=hexToRgbArr(hexColor);
+
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.parentElement.offsetWidth||280;
+  const H=220;
+  canvas.setAttribute('height', H);
+  canvas.width=W*dpr; canvas.height=H*dpr; ctx.scale(dpr,dpr);
+
+  const cx=W/2,cy=H/2;
+  const minR=ns===1?72:32;
+  const maxR=Math.min(cx,cy)-6;
+  const step=ns>1?(maxR-minR)/(ns-1):0;
+
+  const totalE=shells.reduce((a,b)=>a+b,0);
+  const eBase=totalE<=2?2.8:totalE<=10?2.2:totalE<=36?1.8:totalE<=54?1.5:1.2;
+
+  const electronData=[];
+  shells.forEach((count,si)=>{
+    const r=minR+si*step;
+    for(let e=0;e<count;e++){
+      const seed=si*97+e*31;
+      const rand=(o)=>{const x=Math.sin(seed+o)*43758.5453;return x-Math.floor(x);};
+      electronData.push({r,tilt:0.1+rand(1)*0.85,planeAngle:rand(2)*Math.PI*2,
+        speed:(0.25+rand(3)*1.4)*(rand(4)>0.5?1:-1),offset:rand(5)*Math.PI*2});
+    }
+  });
+
+  const shellRadii=shells.map((_,i)=>minR+i*step);
+  let lastTime=null;
+
+  function draw(ts){
+    if(!lastTime)lastTime=ts;
+    const dt=Math.min((ts-lastTime)/1000,0.05);
+    lastTime=ts;
+    ctx.clearRect(0,0,W,H);
+    electronData.forEach(e=>{e.offset+=e.speed*dt;});
+
+    shellRadii.forEach(r=>{
+      ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(${cr},${cg},${cb},0.08)`;ctx.lineWidth=0.6;ctx.stroke();
+    });
+
+    const allE=electronData.map(ed=>{
+      const x3=ed.r*Math.cos(ed.offset);
+      const y3=ed.r*Math.sin(ed.offset)*ed.tilt;
+      const xr=x3*Math.cos(ed.planeAngle)-y3*Math.sin(ed.planeAngle);
+      const yr=x3*Math.sin(ed.planeAngle)+y3*Math.cos(ed.planeAngle);
+      const z3=ed.r*Math.sin(ed.offset);
+      return{sx:cx+xr,sy:cy+yr,z3};
+    });
+    allE.sort((a,b)=>a.z3-b.z3);
+
+    // Back electrons
+    allE.filter(e=>e.z3<0).forEach(({sx,sy,z3})=>{
+      const t=Math.abs(z3)/(shellRadii[shellRadii.length-1]||1);
+      const r=Math.max(eBase*(1-t*0.55),0.4);
+      ctx.beginPath();ctx.arc(sx,sy,r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${er},${eg},${eb},${(0.12+(1-t)*0.35).toFixed(2)})`;ctx.fill();
+    });
+
+    drawNucleusCanvas(ctx,cx,cy,z);
+
+    // Front electrons
+    allE.filter(e=>e.z3>=0).forEach(({sx,sy,z3})=>{
+      const t=z3/(shellRadii[shellRadii.length-1]||1);
+      const r=eBase*(0.7+t*0.45);
+      const op=0.6+t*0.4;
+      const grd=ctx.createRadialGradient(sx,sy,0,sx,sy,r*2.0);
+      grd.addColorStop(0,`rgba(${er},${eg},${eb},${(op*0.35).toFixed(2)})`);
+      grd.addColorStop(1,`rgba(${er},${eg},${eb},0)`);
+      ctx.beginPath();ctx.arc(sx,sy,r*2.0,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
+      const g2=ctx.createRadialGradient(sx-r*0.3,sy-r*0.3,0,sx,sy,r);
+      g2.addColorStop(0,`rgba(255,255,255,${(op*0.6).toFixed(2)})`);
+      g2.addColorStop(0.4,`rgba(${er},${eg},${eb},${op.toFixed(2)})`);
+      g2.addColorStop(1,`rgba(${er},${eg},${eb},${(op*0.7).toFixed(2)})`);
+      ctx.beginPath();ctx.arc(sx,sy,r,0,Math.PI*2);ctx.fillStyle=g2;ctx.fill();
+    });
+
+    atomAnimId=requestAnimationFrame(draw);
+  }
+  atomAnimId=requestAnimationFrame(draw);
+}
 
 const CAT = {
   'Alkali Metal':      'var(--c-alkali)',
@@ -763,10 +1065,12 @@ function openPanel(el) {
   `;
 
   document.getElementById('panel').classList.add('open');
+  setTimeout(() => startAtomCanvas(el.z, color), 30);
 }
 
 document.getElementById('closeBtn').addEventListener('click', () => {
   document.getElementById('panel').classList.remove('open');
+  if(atomAnimId){cancelAnimationFrame(atomAnimId);atomAnimId=null;}
   openedEl = null;
 });
 
