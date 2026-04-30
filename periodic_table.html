@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=1043, initial-scale=1.0, shrink-to-fit=yes">
 <title>Interactive Periodic Table</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%224%22%20fill%3D%22%2307090f%22/%3E%0A%20%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%2213%22%20ry%3D%225%22%20fill%3D%22none%22%20stroke%3D%22%2300e5ff%22%20stroke-width%3D%221.4%22/%3E%0A%20%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%2213%22%20ry%3D%225%22%20fill%3D%22none%22%20stroke%3D%22%2300e5ff%22%20stroke-width%3D%221.4%22%20transform%3D%22rotate%2860%2016%2016%29%22/%3E%0A%20%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%2213%22%20ry%3D%225%22%20fill%3D%22none%22%20stroke%3D%22%2300e5ff%22%20stroke-width%3D%221.4%22%20transform%3D%22rotate%28120%2016%2016%29%22/%3E%0A%20%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%223%22%20fill%3D%22%2300e5ff%22/%3E%0A%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -46,6 +46,7 @@ body {
 .page {
   min-width: 1043px;
   width: 1043px;
+  transform-origin: top left;
 }
 
 /* ── HEADER ── */
@@ -1075,6 +1076,27 @@ document.getElementById('closeBtn').addEventListener('click', () => {
 });
 
 // legend removed
+
+// ─── AUTO-SCALE FOR IPAD / NARROW BROWSERS ──────────────────────────────────
+function autoScale() {
+  const page = document.querySelector('.page');
+  if (!page) return;
+  const vw = window.innerWidth;
+  const pageW = 1043;
+  if (vw < pageW) {
+    const scale = vw / pageW;
+    page.style.transform = `scale(${scale})`;
+    page.style.marginBottom = `-${Math.round(pageW * (1 - scale))}px`;
+    document.body.style.overflowX = 'hidden';
+  } else {
+    page.style.transform = '';
+    page.style.marginBottom = '';
+    document.body.style.overflowX = 'auto';
+  }
+}
+autoScale();
+window.addEventListener('resize', autoScale);
+
 </script>
 </body>
 </html>
