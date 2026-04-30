@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Periodic Table</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzA3MDkwZiIvPgogIDwhLS0gT3JiaXQgMSAtLT4KICCA8ZWxsaXBzZSBjeD0iMTYiIGN5PSIxNiIgcng9IjEzIiByeT0iNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBlNWZmIiBzdHJva2Utd2lkdGg9IjEuMiIgb3BhY2l0eT0iMC44NSIvPgogIDwhLS0gT3JiaXQgMiByb3RhdGVkIDYwZGVnIC0tPgogIDxlbGxpcHNlIGN4PSIxNiIgY3k9IjE2IiByeD0iMTMiIHJ5PSI1IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMGU1ZmYiIHN0cm9rZS13aWR0aD0iMS4yIiBvcGFjaXR5PSIwLjg1IiB0cmFuc2Zvcm09InJvdGF0ZSg2MCAxNiAxNikiLz4KICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKKICAGIDWHLS0gT3JiaXQgMyByb3RhdGVkIDEyMGRlZyAtLT4KICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKKICAGIDXJAXJJBGUGY3g9IjE2IiBjeT0iMTYiIHI9IjIuOCIgZmlsbD0iIzAwZTVmZiIvPgo8L3N2Zz4=">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #07090f;
+  --surface: #0d1117;
+  --border: #1e2433;
+  --text: #c8d6f0;
+  --muted: #5a6680;
+
+  /* Category colours (default/filter mode) */
+  --c-alkali:      #ff4d6d;
+  --c-alkaline:    #ff8c42;
+  --c-transition:  #4facfe;
+  --c-post:        #a78bfa;
+  --c-metalloid:   #34d399;
+  --c-nonmetal:    #fbbf24;
+  --c-noble:       #f472b6;
+  --c-lanthanide:  #60a5fa;
+  --c-actinide:    #f87171;
+  --c-unknown:     #6b7280;
+
+  /* Phase colours */
+  --c-solid:   #4facfe;
+  --c-liquid:  #34d399;
+  --c-gas:     #c084fc;
+  --c-unknown-phase: #3a4560;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: auto;
+  margin: 0;
+}
+.page {
+  min-width: 1043px;
+  width: 1043px;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid var(--border);
+  width: 1043px;
+  box-sizing: border-box;
+}
+.header-left { display: flex; align-items: baseline; gap: 14px; flex-shrink: 0; }
+header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1;
+}
+header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+.header-phase {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.header-phase label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.header-phase input[type=range] {
+  width: 140px;
+  accent-color: #4facfe;
+  cursor: pointer;
+}
+.temp-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: #4facfe;
+  min-width: 52px;
+}
+.phase-legend { display: flex; gap: 10px; align-items: center; }
+.pl-item {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 0.58rem;
+  font-family: 'Space Mono', monospace;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.pl-dot { width: 7px; height: 7px; border-radius: 2px; flex-shrink: 0; }
+
+/* ── CONTROLS ── */
+.controls {
+  padding: 10px 28px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  min-width: 975px;
+}
+.controls input[type=text] {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text);
+  padding: 5px 11px;
+  font-size: 0.8rem;
+  font-family: 'Space Mono', monospace;
+  width: 160px;
+  outline: none;
+  transition: border 0.15s;
+}
+.controls input[type=text]:focus { border-color: #4facfe; }
+
+.sep { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+
+.filter-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.63rem;
+  padding: 4px 7px 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+.filter-btn[data-cat]::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--col, transparent);
+  opacity: 0.7;
+}
+.filter-btn[data-cat]:hover,
+.filter-btn[data-cat].active {
+  border-color: var(--col);
+  color: var(--col);
+  background: color-mix(in srgb, var(--col) 12%, transparent);
+}
+.filter-btn[data-cat]:hover::before,
+.filter-btn[data-cat].active::before {
+  opacity: 1;
+}
+.filter-btn.clear-btn:hover { border-color: var(--text); color: var(--text); }
+
+/* ── TABLE ── */
+.table-wrap { padding: 16px 28px 6px; overflow-x: auto; }
+
+.pt-grid {
+  display: grid;
+  grid-template-columns: repeat(18, 52px);
+  grid-template-rows: repeat(7, 52px) 20px repeat(2, 52px);
+  gap: 3px;
+  min-width: 975px;
+}
+
+.el {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.15s, background 0.3s, opacity 0.2s;
+  overflow: hidden;
+}
+.el::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background: var(--phase-bg, transparent);
+  opacity: 0.18;
+  pointer-events: none;
+  transition: background 0.3s, opacity 0.3s;
+}
+.el .top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2.5px;
+  background: var(--el-color, var(--muted));
+  border-radius: 4px 4px 0 0;
+  transition: background 0.3s;
+}
+.el:hover {
+  transform: scale(1.18);
+  z-index: 20;
+  border-color: var(--el-color, #4facfe);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--el-color, #4facfe) 50%, transparent);
+}
+.el.dimmed { opacity: 0.12; pointer-events: none; }
+.el.highlighted { opacity: 1; }
+
+.el .z {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.48rem;
+  color: var(--muted);
+  align-self: flex-start;
+  margin-left: 3px;
+  line-height: 1;
+}
+.el .sym {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  color: var(--el-color, var(--text));
+  line-height: 1;
+  margin-top: 1px;
+  transition: color 0.3s;
+}
+.el .el-name {
+  font-size: 0.4rem;
+  color: var(--muted);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  padding: 0 2px;
+  line-height: 1.2;
+}
+.el .el-mass {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.4rem;
+  color: #2a3550;
+  line-height: 1;
+}
+
+/* f-block label cells */
+.f-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  font-family: 'Space Mono', monospace;
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* row 8 gap */
+.gap-row { grid-column: 1 / span 18; height: 8px; }
+
+/* ── DETAIL PANEL ── */
+.panel {
+  position: fixed;
+  right: 0; top: 0; bottom: 0;
+  width: 300px;
+  background: #090c14;
+  border-left: 1px solid var(--border);
+  transform: translateX(100%);
+  transition: transform 0.24s cubic-bezier(0.22,1,0.36,1);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.panel.open { transform: translateX(0); }
+
+.panel-head {
+  padding: 22px 22px 16px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  background: #0b0e17;
+  flex-shrink: 0;
+}
+.close-btn {
+  position: absolute; top: 14px; right: 14px;
+  background: none; border: none; color: var(--muted);
+  font-size: 1.1rem; cursor: pointer; font-family: monospace;
+  transition: color 0.15s; line-height: 1;
+}
+.close-btn:hover { color: #fff; }
+
+.p-sym {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem;
+  line-height: 1;
+}
+.p-name { font-size: 1rem; font-weight: 500; color: #fff; margin-top: 2px; }
+.p-meta { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 4px; }
+.p-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.badge {
+  font-size: 0.6rem; font-family: 'Space Mono', monospace;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 3px;
+}
+
+.panel-body { overflow-y: auto; padding: 16px 22px 24px; flex: 1; }
+.p-section {
+  font-size: 0.58rem; font-family: 'Space Mono', monospace;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin: 16px 0 6px;
+}
+.p-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 8px 0; border-bottom: 1px solid #0f1624;
+  font-size: 0.78rem;
+}
+.p-row .lbl { color: var(--muted); font-size: 0.68rem; }
+.p-row .val { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--text); text-align: right; }
+.config-box {
+  background: #0d1117; border: 1px solid var(--border); border-radius: 5px;
+  padding: 9px 12px; font-family: 'Space Mono', monospace;
+  font-size: 0.7rem; color: #4facfe; word-break: break-word; line-height: 1.7;
+}
+.phase-pill {
+  display: inline-block; font-size: 0.62rem; font-family: 'Space Mono', monospace;
+  padding: 2px 7px; border-radius: 3px;
+}
+.phase-pill.solid   { background:#1e3a5f; color:#60a5fa; }
+.phase-pill.liquid  { background:#1a3d2e; color:#34d399; }
+.phase-pill.gas     { background:#2d1a4d; color:#c084fc; }
+.phase-pill.unknown-phase { background:#1f2937; color:#6b7280; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <div class="header-left">
+    <h1>Periodic Table</h1>
+    <p>118 Elements · Interactive</p>
+  </div>
+  <div class="header-phase">
+    <label>Phase at:</label>
+    <input type="range" id="tempSlider" min="-273" max="6000" value="25" step="5">
+    <span class="temp-val" id="tempVal">25 °C</span>
+    <div class="phase-legend">
+      <div class="pl-item"><div class="pl-dot" style="background:var(--c-solid)"></div>Solid</div>
+      <div class="pl-item"><div class="pl-dot" style="background:var(--c-liquid)"></div>Liquid</div>
+      <div class="pl-item"><div class="pl-dot" style="background:var(--c-gas)"></div>Gas</div>
+      <div class="pl-item"><div class="pl-dot" style="background:#3a4560"></div>Unknown</div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Name, symbol or Z…">
+  <button class="filter-btn clear-btn" id="clear-btn">✕ Clear</button>
+  <div class="sep"></div>
+  <button class="filter-btn" data-cat="Alkali Metal"     style="--col:var(--c-alkali);margin-left:auto">Alkali</button>
+  <button class="filter-btn" data-cat="Alkaline Earth"   style="--col:var(--c-alkaline)">Alkaline Earth</button>
+  <button class="filter-btn" data-cat="Transition Metal" style="--col:var(--c-transition)">Transition</button>
+  <button class="filter-btn" data-cat="Post-Transition"  style="--col:var(--c-post)">Post-Trans.</button>
+  <button class="filter-btn" data-cat="Metalloid"        style="--col:var(--c-metalloid)">Metalloid</button>
+  <button class="filter-btn" data-cat="Nonmetal"         style="--col:var(--c-nonmetal)">Nonmetal</button>
+  <button class="filter-btn" data-cat="Noble Gas"        style="--col:var(--c-noble)">Noble Gas</button>
+  <button class="filter-btn" data-cat="Lanthanide"       style="--col:var(--c-lanthanide)">Lanthanide</button>
+  <button class="filter-btn" data-cat="Actinide"         style="--col:var(--c-actinide)">Actinide</button>
+</div>
+
+<div class="table-wrap">
+  <div class="pt-grid" id="grid"></div>
+</div>
+
+</div><!-- /.page -->
+
+<!-- Detail Panel -->
+<div class="panel" id="panel">
+  <div class="panel-head">
+    <button class="close-btn" id="closeBtn">✕</button>
+    <div class="p-sym" id="pSym"></div>
+    <div class="p-name" id="pName"></div>
+    <div class="p-meta" id="pMeta"></div>
+    <div class="p-badges" id="pBadges"></div>
+  </div>
+  <div class="panel-body" id="pBody"></div>
+</div>
+
+<script>
+const E = [
+  {z:1,  s:'H',  n:'Hydrogen',      m:1.008,   cat:'Nonmetal',        row:1, col:1,  melt:-259.2, boil:-252.9, den:0.00009, cfg:'1s¹',                  disc:1766},
+  {z:2,  s:'He', n:'Helium',        m:4.003,   cat:'Noble Gas',       row:1, col:18, melt:-272.2, boil:-268.9, den:0.00018, cfg:'1s²',                  disc:1895},
+  {z:3,  s:'Li', n:'Lithium',       m:6.941,   cat:'Alkali Metal',    row:2, col:1,  melt:180.5,  boil:1342,   den:0.534,   cfg:'[He] 2s¹',             disc:1817},
+  {z:4,  s:'Be', n:'Beryllium',     m:9.012,   cat:'Alkaline Earth',  row:2, col:2,  melt:1287,   boil:2469,   den:1.85,    cfg:'[He] 2s²',             disc:1797},
+  {z:5,  s:'B',  n:'Boron',         m:10.811,  cat:'Metalloid',       row:2, col:13, melt:2076,   boil:3927,   den:2.37,    cfg:'[He] 2s² 2p¹',         disc:1808},
+  {z:6,  s:'C',  n:'Carbon',        m:12.011,  cat:'Nonmetal',        row:2, col:14, melt:3550,   boil:4027,   den:2.267,   cfg:'[He] 2s² 2p²',         disc:'ancient'},
+  {z:7,  s:'N',  n:'Nitrogen',      m:14.007,  cat:'Nonmetal',        row:2, col:15, melt:-210.0, boil:-195.8, den:0.00125, cfg:'[He] 2s² 2p³',         disc:1772},
+  {z:8,  s:'O',  n:'Oxygen',        m:15.999,  cat:'Nonmetal',        row:2, col:16, melt:-218.3, boil:-183.0, den:0.00143, cfg:'[He] 2s² 2p⁴',         disc:1774},
+  {z:9,  s:'F',  n:'Fluorine',      m:18.998,  cat:'Nonmetal',        row:2, col:17, melt:-219.6, boil:-188.1, den:0.0017,  cfg:'[He] 2s² 2p⁵',         disc:1886},
+  {z:10, s:'Ne', n:'Neon',          m:20.180,  cat:'Noble Gas',       row:2, col:18, melt:-248.6, boil:-246.1, den:0.0009,  cfg:'[He] 2s² 2p⁶',         disc:1898},
+  {z:11, s:'Na', n:'Sodium',        m:22.990,  cat:'Alkali Metal',    row:3, col:1,  melt:97.8,   boil:882.9,  den:0.97,    cfg:'[Ne] 3s¹',             disc:1807},
+  {z:12, s:'Mg', n:'Magnesium',     m:24.305,  cat:'Alkaline Earth',  row:3, col:2,  melt:650,    boil:1090,   den:1.74,    cfg:'[Ne] 3s²',             disc:1755},
+  {z:13, s:'Al', n:'Aluminum',      m:26.982,  cat:'Post-Transition', row:3, col:13, melt:660.3,  boil:2519,   den:2.7,     cfg:'[Ne] 3s² 3p¹',         disc:1825},
+  {z:14, s:'Si', n:'Silicon',       m:28.086,  cat:'Metalloid',       row:3, col:14, melt:1414,   boil:3265,   den:2.33,    cfg:'[Ne] 3s² 3p²',         disc:1824},
+  {z:15, s:'P',  n:'Phosphorus',    m:30.974,  cat:'Nonmetal',        row:3, col:15, melt:44.2,   boil:280.5,  den:1.82,    cfg:'[Ne] 3s² 3p³',         disc:1669},
+  {z:16, s:'S',  n:'Sulfur',        m:32.065,  cat:'Nonmetal',        row:3, col:16, melt:119.6,  boil:444.6,  den:2.07,    cfg:'[Ne] 3s² 3p⁴',         disc:'ancient'},
+  {z:17, s:'Cl', n:'Chlorine',      m:35.453,  cat:'Nonmetal',        row:3, col:17, melt:-101.5, boil:-34.0,  den:0.003,   cfg:'[Ne] 3s² 3p⁵',         disc:1774},
+  {z:18, s:'Ar', n:'Argon',         m:39.948,  cat:'Noble Gas',       row:3, col:18, melt:-189.4, boil:-185.9, den:0.00178, cfg:'[Ne] 3s² 3p⁶',         disc:1894},
+  {z:19, s:'K',  n:'Potassium',     m:39.098,  cat:'Alkali Metal',    row:4, col:1,  melt:63.4,   boil:759,    den:0.862,   cfg:'[Ar] 4s¹',             disc:1807},
+  {z:20, s:'Ca', n:'Calcium',       m:40.078,  cat:'Alkaline Earth',  row:4, col:2,  melt:842,    boil:1484,   den:1.54,    cfg:'[Ar] 4s²',             disc:1808},
+  {z:21, s:'Sc', n:'Scandium',      m:44.956,  cat:'Transition Metal',row:4, col:3,  melt:1541,   boil:2836,   den:2.99,    cfg:'[Ar] 3d¹ 4s²',         disc:1879},
+  {z:22, s:'Ti', n:'Titanium',      m:47.867,  cat:'Transition Metal',row:4, col:4,  melt:1668,   boil:3287,   den:4.51,    cfg:'[Ar] 3d² 4s²',         disc:1791},
+  {z:23, s:'V',  n:'Vanadium',      m:50.942,  cat:'Transition Metal',row:4, col:5,  melt:1910,   boil:3407,   den:6.11,    cfg:'[Ar] 3d³ 4s²',         disc:1801},
+  {z:24, s:'Cr', n:'Chromium',      m:51.996,  cat:'Transition Metal',row:4, col:6,  melt:1907,   boil:2671,   den:7.15,    cfg:'[Ar] 3d⁵ 4s¹',         disc:1798},
+  {z:25, s:'Mn', n:'Manganese',     m:54.938,  cat:'Transition Metal',row:4, col:7,  melt:1246,   boil:2061,   den:7.44,    cfg:'[Ar] 3d⁵ 4s²',         disc:1774},
+  {z:26, s:'Fe', n:'Iron',          m:55.845,  cat:'Transition Metal',row:4, col:8,  melt:1538,   boil:2861,   den:7.87,    cfg:'[Ar] 3d⁶ 4s²',         disc:'ancient'},
+  {z:27, s:'Co', n:'Cobalt',        m:58.933,  cat:'Transition Metal',row:4, col:9,  melt:1495,   boil:2927,   den:8.9,     cfg:'[Ar] 3d⁷ 4s²',         disc:1735},
+  {z:28, s:'Ni', n:'Nickel',        m:58.693,  cat:'Transition Metal',row:4, col:10, melt:1455,   boil:2913,   den:8.91,    cfg:'[Ar] 3d⁸ 4s²',         disc:1751},
+  {z:29, s:'Cu', n:'Copper',        m:63.546,  cat:'Transition Metal',row:4, col:11, melt:1085,   boil:2562,   den:8.96,    cfg:'[Ar] 3d¹⁰ 4s¹',        disc:'ancient'},
+  {z:30, s:'Zn', n:'Zinc',          m:65.380,  cat:'Transition Metal',row:4, col:12, melt:419.5,  boil:907,    den:7.14,    cfg:'[Ar] 3d¹⁰ 4s²',        disc:1746},
+  {z:31, s:'Ga', n:'Gallium',       m:69.723,  cat:'Post-Transition', row:4, col:13, melt:29.8,   boil:2229,   den:5.91,    cfg:'[Ar] 3d¹⁰ 4s² 4p¹',    disc:1875},
+  {z:32, s:'Ge', n:'Germanium',     m:72.640,  cat:'Metalloid',       row:4, col:14, melt:938.3,  boil:2820,   den:5.32,    cfg:'[Ar] 3d¹⁰ 4s² 4p²',    disc:1886},
+  {z:33, s:'As', n:'Arsenic',       m:74.922,  cat:'Metalloid',       row:4, col:15, melt:817,    boil:614,    den:5.73,    cfg:'[Ar] 3d¹⁰ 4s² 4p³',    disc:'ancient'},
+  {z:34, s:'Se', n:'Selenium',      m:78.960,  cat:'Nonmetal',        row:4, col:16, melt:221,    boil:685,    den:4.82,    cfg:'[Ar] 3d¹⁰ 4s² 4p⁴',    disc:1817},
+  {z:35, s:'Br', n:'Bromine',       m:79.904,  cat:'Nonmetal',        row:4, col:17, melt:-7.3,   boil:58.8,   den:3.12,    cfg:'[Ar] 3d¹⁰ 4s² 4p⁵',    disc:1826},
+  {z:36, s:'Kr', n:'Krypton',       m:83.798,  cat:'Noble Gas',       row:4, col:18, melt:-157.4, boil:-153.2, den:0.00375, cfg:'[Ar] 3d¹⁰ 4s² 4p⁶',    disc:1898},
+  {z:37, s:'Rb', n:'Rubidium',      m:85.468,  cat:'Alkali Metal',    row:5, col:1,  melt:39.3,   boil:688,    den:1.53,    cfg:'[Kr] 5s¹',             disc:1861},
+  {z:38, s:'Sr', n:'Strontium',     m:87.620,  cat:'Alkaline Earth',  row:5, col:2,  melt:777,    boil:1382,   den:2.64,    cfg:'[Kr] 5s²',             disc:1790},
+  {z:39, s:'Y',  n:'Yttrium',       m:88.906,  cat:'Transition Metal',row:5, col:3,  melt:1522,   boil:3345,   den:4.47,    cfg:'[Kr] 4d¹ 5s²',         disc:1794},
+  {z:40, s:'Zr', n:'Zirconium',     m:91.224,  cat:'Transition Metal',row:5, col:4,  melt:1854,   boil:4409,   den:6.51,    cfg:'[Kr] 4d² 5s²',         disc:1789},
+  {z:41, s:'Nb', n:'Niobium',       m:92.906,  cat:'Transition Metal',row:5, col:5,  melt:2477,   boil:4744,   den:8.57,    cfg:'[Kr] 4d⁴ 5s¹',         disc:1801},
+  {z:42, s:'Mo', n:'Molybdenum',    m:95.960,  cat:'Transition Metal',row:5, col:6,  melt:2622,   boil:4639,   den:10.28,   cfg:'[Kr] 4d⁵ 5s¹',         disc:1781},
+  {z:43, s:'Tc', n:'Technetium',    m:98,      cat:'Transition Metal',row:5, col:7,  melt:2157,   boil:4265,   den:11.5,    cfg:'[Kr] 4d⁵ 5s²',         disc:1937},
+  {z:44, s:'Ru', n:'Ruthenium',     m:101.07,  cat:'Transition Metal',row:5, col:8,  melt:2333,   boil:4150,   den:12.45,   cfg:'[Kr] 4d⁷ 5s¹',         disc:1844},
+  {z:45, s:'Rh', n:'Rhodium',       m:102.906, cat:'Transition Metal',row:5, col:9,  melt:1964,   boil:3695,   den:12.41,   cfg:'[Kr] 4d⁸ 5s¹',         disc:1803},
+  {z:46, s:'Pd', n:'Palladium',     m:106.42,  cat:'Transition Metal',row:5, col:10, melt:1555,   boil:2963,   den:12.02,   cfg:'[Kr] 4d¹⁰',            disc:1803},
+  {z:47, s:'Ag', n:'Silver',        m:107.868, cat:'Transition Metal',row:5, col:11, melt:961.8,  boil:2162,   den:10.49,   cfg:'[Kr] 4d¹⁰ 5s¹',        disc:'ancient'},
+  {z:48, s:'Cd', n:'Cadmium',       m:112.411, cat:'Transition Metal',row:5, col:12, melt:321.1,  boil:767,    den:8.69,    cfg:'[Kr] 4d¹⁰ 5s²',        disc:1817},
+  {z:49, s:'In', n:'Indium',        m:114.818, cat:'Post-Transition', row:5, col:13, melt:156.6,  boil:2072,   den:7.31,    cfg:'[Kr] 4d¹⁰ 5s² 5p¹',    disc:1863},
+  {z:50, s:'Sn', n:'Tin',           m:118.710, cat:'Post-Transition', row:5, col:14, melt:231.9,  boil:2602,   den:7.29,    cfg:'[Kr] 4d¹⁰ 5s² 5p²',    disc:'ancient'},
+  {z:51, s:'Sb', n:'Antimony',      m:121.760, cat:'Metalloid',       row:5, col:15, melt:630.6,  boil:1587,   den:6.69,    cfg:'[Kr] 4d¹⁰ 5s² 5p³',    disc:'ancient'},
+  {z:52, s:'Te', n:'Tellurium',     m:127.600, cat:'Metalloid',       row:5, col:16, melt:449.5,  boil:988,    den:6.24,    cfg:'[Kr] 4d¹⁰ 5s² 5p⁴',    disc:1782},
+  {z:53, s:'I',  n:'Iodine',        m:126.904, cat:'Nonmetal',        row:5, col:17, melt:113.7,  boil:184.4,  den:4.94,    cfg:'[Kr] 4d¹⁰ 5s² 5p⁵',    disc:1811},
+  {z:54, s:'Xe', n:'Xenon',         m:131.293, cat:'Noble Gas',       row:5, col:18, melt:-111.8, boil:-108.0, den:0.00589, cfg:'[Kr] 4d¹⁰ 5s² 5p⁶',    disc:1898},
+  {z:55, s:'Cs', n:'Caesium',       m:132.905, cat:'Alkali Metal',    row:6, col:1,  melt:28.4,   boil:671,    den:1.87,    cfg:'[Xe] 6s¹',             disc:1860},
+  {z:56, s:'Ba', n:'Barium',        m:137.327, cat:'Alkaline Earth',  row:6, col:2,  melt:727,    boil:1897,   den:3.59,    cfg:'[Xe] 6s²',             disc:1808},
+  {z:57, s:'La', n:'Lanthanum',     m:138.905, cat:'Lanthanide',      row:9, col:4,  melt:920,    boil:3464,   den:6.15,    cfg:'[Xe] 5d¹ 6s²',         disc:1839},
+  {z:58, s:'Ce', n:'Cerium',        m:140.116, cat:'Lanthanide',      row:9, col:5,  melt:798,    boil:3443,   den:6.77,    cfg:'[Xe] 4f¹ 5d¹ 6s²',     disc:1803},
+  {z:59, s:'Pr', n:'Praseodymium',  m:140.908, cat:'Lanthanide',      row:9, col:6,  melt:931,    boil:3520,   den:6.77,    cfg:'[Xe] 4f³ 6s²',         disc:1885},
+  {z:60, s:'Nd', n:'Neodymium',     m:144.242, cat:'Lanthanide',      row:9, col:7,  melt:1021,   boil:3074,   den:7.01,    cfg:'[Xe] 4f⁴ 6s²',         disc:1885},
+  {z:61, s:'Pm', n:'Promethium',    m:145,     cat:'Lanthanide',      row:9, col:8,  melt:1100,   boil:3000,   den:7.26,    cfg:'[Xe] 4f⁵ 6s²',         disc:1945},
+  {z:62, s:'Sm', n:'Samarium',      m:150.360, cat:'Lanthanide',      row:9, col:9,  melt:1074,   boil:1794,   den:7.52,    cfg:'[Xe] 4f⁶ 6s²',         disc:1879},
+  {z:63, s:'Eu', n:'Europium',      m:151.964, cat:'Lanthanide',      row:9, col:10, melt:822,    boil:1529,   den:5.24,    cfg:'[Xe] 4f⁷ 6s²',         disc:1901},
+  {z:64, s:'Gd', n:'Gadolinium',    m:157.250, cat:'Lanthanide',      row:9, col:11, melt:1313,   boil:3273,   den:7.9,     cfg:'[Xe] 4f⁷ 5d¹ 6s²',     disc:1880},
+  {z:65, s:'Tb', n:'Terbium',       m:158.925, cat:'Lanthanide',      row:9, col:12, melt:1356,   boil:3230,   den:8.23,    cfg:'[Xe] 4f⁹ 6s²',         disc:1843},
+  {z:66, s:'Dy', n:'Dysprosium',    m:162.500, cat:'Lanthanide',      row:9, col:13, melt:1412,   boil:2567,   den:8.55,    cfg:'[Xe] 4f¹⁰ 6s²',        disc:1886},
+  {z:67, s:'Ho', n:'Holmium',       m:164.930, cat:'Lanthanide',      row:9, col:14, melt:1474,   boil:2700,   den:8.79,    cfg:'[Xe] 4f¹¹ 6s²',        disc:1878},
+  {z:68, s:'Er', n:'Erbium',        m:167.259, cat:'Lanthanide',      row:9, col:15, melt:1529,   boil:2868,   den:9.07,    cfg:'[Xe] 4f¹² 6s²',        disc:1843},
+  {z:69, s:'Tm', n:'Thulium',       m:168.934, cat:'Lanthanide',      row:9, col:16, melt:1545,   boil:1950,   den:9.32,    cfg:'[Xe] 4f¹³ 6s²',        disc:1879},
+  {z:70, s:'Yb', n:'Ytterbium',     m:173.040, cat:'Lanthanide',      row:9, col:17, melt:819,    boil:1196,   den:6.9,     cfg:'[Xe] 4f¹⁴ 6s²',        disc:1878},
+  {z:71, s:'Lu', n:'Lutetium',      m:174.967, cat:'Lanthanide',      row:9, col:18, melt:1663,   boil:3402,   den:9.84,    cfg:'[Xe] 4f¹⁴ 5d¹ 6s²',    disc:1907},
+  {z:72, s:'Hf', n:'Hafnium',       m:178.490, cat:'Transition Metal',row:6, col:4,  melt:2233,   boil:4603,   den:13.31,   cfg:'[Xe] 4f¹⁴ 5d² 6s²',    disc:1923},
+  {z:73, s:'Ta', n:'Tantalum',      m:180.948, cat:'Transition Metal',row:6, col:5,  melt:3017,   boil:5458,   den:16.65,   cfg:'[Xe] 4f¹⁴ 5d³ 6s²',    disc:1802},
+  {z:74, s:'W',  n:'Tungsten',      m:183.840, cat:'Transition Metal',row:6, col:6,  melt:3422,   boil:5555,   den:19.25,   cfg:'[Xe] 4f¹⁴ 5d⁴ 6s²',    disc:1783},
+  {z:75, s:'Re', n:'Rhenium',       m:186.207, cat:'Transition Metal',row:6, col:7,  melt:3186,   boil:5596,   den:21.02,   cfg:'[Xe] 4f¹⁴ 5d⁵ 6s²',    disc:1925},
+  {z:76, s:'Os', n:'Osmium',        m:190.230, cat:'Transition Metal',row:6, col:8,  melt:3033,   boil:5012,   den:22.59,   cfg:'[Xe] 4f¹⁴ 5d⁶ 6s²',    disc:1803},
+  {z:77, s:'Ir', n:'Iridium',       m:192.217, cat:'Transition Metal',row:6, col:9,  melt:2446,   boil:4428,   den:22.56,   cfg:'[Xe] 4f¹⁴ 5d⁷ 6s²',    disc:1803},
+  {z:78, s:'Pt', n:'Platinum',      m:195.084, cat:'Transition Metal',row:6, col:10, melt:1768,   boil:3825,   den:21.45,   cfg:'[Xe] 4f¹⁴ 5d⁹ 6s¹',    disc:1735},
+  {z:79, s:'Au', n:'Gold',          m:196.967, cat:'Transition Metal',row:6, col:11, melt:1064,   boil:2856,   den:19.3,    cfg:'[Xe] 4f¹⁴ 5d¹⁰ 6s¹',   disc:'ancient'},
+  {z:80, s:'Hg', n:'Mercury',       m:200.590, cat:'Transition Metal',row:6, col:12, melt:-38.8,  boil:356.7,  den:13.534,  cfg:'[Xe] 4f¹⁴ 5d¹⁰ 6s²',   disc:'ancient'},
+  {z:81, s:'Tl', n:'Thallium',      m:204.383, cat:'Post-Transition', row:6, col:13, melt:304,    boil:1473,   den:11.85,   cfg:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p¹',disc:1861},
+  {z:82, s:'Pb', n:'Lead',          m:207.200, cat:'Post-Transition', row:6, col:14, melt:327.5,  boil:1749,   den:11.34,   cfg:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²',disc:'ancient'},
+  {z:83, s:'Bi', n:'Bismuth',       m:208.980, cat:'Post-Transition', row:6, col:15, melt:271.5,  boil:1564,   den:9.78,    cfg:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p³',disc:'ancient'},
+  {z:84, s:'Po', n:'Polonium',      m:209,     cat:'Metalloid',       row:6, col:16, melt:254,    boil:962,    den:9.32,    cfg:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁴',disc:1898},
+  {z:85, s:'At', n:'Astatine',      m:210,     cat:'Metalloid',       row:6, col:17, melt:302,    boil:337,    den:7,       cfg:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁵',disc:1940},
+  {z:86, s:'Rn', n:'Radon',         m:222,     cat:'Noble Gas',       row:6, col:18, melt:-71,    boil:-61.7,  den:0.00973, cfg:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p⁶',disc:1900},
+  {z:87, s:'Fr', n:'Francium',      m:223,     cat:'Alkali Metal',    row:7, col:1,  melt:27,     boil:677,    den:1.87,    cfg:'[Rn] 7s¹',             disc:1939},
+  {z:88, s:'Ra', n:'Radium',        m:226,     cat:'Alkaline Earth',  row:7, col:2,  melt:700,    boil:1737,   den:5.5,     cfg:'[Rn] 7s²',             disc:1898},
+  {z:89, s:'Ac', n:'Actinium',      m:227,     cat:'Actinide',        row:10,col:4,  melt:1050,   boil:3200,   den:10.07,   cfg:'[Rn] 6d¹ 7s²',         disc:1899},
+  {z:90, s:'Th', n:'Thorium',       m:232.038, cat:'Actinide',        row:10,col:5,  melt:1750,   boil:4820,   den:11.72,   cfg:'[Rn] 6d² 7s²',         disc:1829},
+  {z:91, s:'Pa', n:'Protactinium',  m:231.036, cat:'Actinide',        row:10,col:6,  melt:1572,   boil:4000,   den:15.37,   cfg:'[Rn] 5f² 6d¹ 7s²',     disc:1913},
+  {z:92, s:'U',  n:'Uranium',       m:238.029, cat:'Actinide',        row:10,col:7,  melt:1132,   boil:4131,   den:19.05,   cfg:'[Rn] 5f³ 6d¹ 7s²',     disc:1789},
+  {z:93, s:'Np', n:'Neptunium',     m:237,     cat:'Actinide',        row:10,col:8,  melt:644,    boil:3902,   den:20.45,   cfg:'[Rn] 5f⁴ 6d¹ 7s²',     disc:1940},
+  {z:94, s:'Pu', n:'Plutonium',     m:244,     cat:'Actinide',        row:10,col:9,  melt:640,    boil:3228,   den:19.84,   cfg:'[Rn] 5f⁶ 7s²',         disc:1940},
+  {z:95, s:'Am', n:'Americium',     m:243,     cat:'Actinide',        row:10,col:10, melt:1176,   boil:2607,   den:13.69,   cfg:'[Rn] 5f⁷ 7s²',         disc:1944},
+  {z:96, s:'Cm', n:'Curium',        m:247,     cat:'Actinide',        row:10,col:11, melt:1340,   boil:3110,   den:13.51,   cfg:'[Rn] 5f⁷ 6d¹ 7s²',     disc:1944},
+  {z:97, s:'Bk', n:'Berkelium',     m:247,     cat:'Actinide',        row:10,col:12, melt:1050,   boil:2627,   den:14.79,   cfg:'[Rn] 5f⁹ 7s²',         disc:1949},
+  {z:98, s:'Cf', n:'Californium',   m:251,     cat:'Actinide',        row:10,col:13, melt:900,    boil:1472,   den:15.1,    cfg:'[Rn] 5f¹⁰ 7s²',        disc:1950},
+  {z:99, s:'Es', n:'Einsteinium',   m:252,     cat:'Actinide',        row:10,col:14, melt:860,    boil:996,    den:8.84,    cfg:'[Rn] 5f¹¹ 7s²',        disc:1952},
+  {z:100,s:'Fm', n:'Fermium',       m:257,     cat:'Actinide',        row:10,col:15, melt:1527,   boil:null,   den:null,    cfg:'[Rn] 5f¹² 7s²',        disc:1952},
+  {z:101,s:'Md', n:'Mendelevium',   m:258,     cat:'Actinide',        row:10,col:16, melt:827,    boil:null,   den:null,    cfg:'[Rn] 5f¹³ 7s²',        disc:1955},
+  {z:102,s:'No', n:'Nobelium',      m:259,     cat:'Actinide',        row:10,col:17, melt:827,    boil:null,   den:null,    cfg:'[Rn] 5f¹⁴ 7s²',        disc:1958},
+  {z:103,s:'Lr', n:'Lawrencium',    m:266,     cat:'Actinide',        row:10,col:18, melt:1627,   boil:null,   den:null,    cfg:'[Rn] 5f¹⁴ 7s² 7p¹',   disc:1961},
+  {z:104,s:'Rf', n:'Rutherfordium', m:267,     cat:'Transition Metal',row:7, col:4,  melt:2100,   boil:5500,   den:23.2,    cfg:'[Rn] 5f¹⁴ 6d² 7s²',    disc:1964},
+  {z:105,s:'Db', n:'Dubnium',       m:268,     cat:'Transition Metal',row:7, col:5,  melt:null,   boil:null,   den:29.3,    cfg:'[Rn] 5f¹⁴ 6d³ 7s²',    disc:1970},
+  {z:106,s:'Sg', n:'Seaborgium',    m:269,     cat:'Transition Metal',row:7, col:6,  melt:null,   boil:null,   den:35,      cfg:'[Rn] 5f¹⁴ 6d⁴ 7s²',    disc:1974},
+  {z:107,s:'Bh', n:'Bohrium',       m:270,     cat:'Transition Metal',row:7, col:7,  melt:null,   boil:null,   den:37.1,    cfg:'[Rn] 5f¹⁴ 6d⁵ 7s²',    disc:1981},
+  {z:108,s:'Hs', n:'Hassium',       m:277,     cat:'Transition Metal',row:7, col:8,  melt:null,   boil:null,   den:40.7,    cfg:'[Rn] 5f¹⁴ 6d⁶ 7s²',    disc:1984},
+  {z:109,s:'Mt', n:'Meitnerium',    m:278,     cat:'Unknown',         row:7, col:9,  melt:null,   boil:null,   den:37.4,    cfg:'[Rn] 5f¹⁴ 6d⁷ 7s²',    disc:1982},
+  {z:110,s:'Ds', n:'Darmstadtium',  m:281,     cat:'Unknown',         row:7, col:10, melt:null,   boil:null,   den:34.8,    cfg:'[Rn] 5f¹⁴ 6d⁸ 7s²',    disc:1994},
+  {z:111,s:'Rg', n:'Roentgenium',   m:282,     cat:'Unknown',         row:7, col:11, melt:null,   boil:null,   den:28.7,    cfg:'[Rn] 5f¹⁴ 6d⁹ 7s²',    disc:1994},
+  {z:112,s:'Cn', n:'Copernicium',   m:285,     cat:'Transition Metal',row:7, col:12, melt:null,   boil:null,   den:23.7,    cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s²',   disc:1996},
+  {z:113,s:'Nh', n:'Nihonium',      m:286,     cat:'Post-Transition', row:7, col:13, melt:700,    boil:1430,   den:16,      cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p¹',disc:2004},
+  {z:114,s:'Fl', n:'Flerovium',     m:289,     cat:'Post-Transition', row:7, col:14, melt:null,   boil:null,   den:14,      cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p²',disc:1998},
+  {z:115,s:'Mc', n:'Moscovium',     m:290,     cat:'Post-Transition', row:7, col:15, melt:400,    boil:1100,   den:13.5,    cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p³',disc:2003},
+  {z:116,s:'Lv', n:'Livermorium',   m:293,     cat:'Post-Transition', row:7, col:16, melt:364,    boil:762,    den:12.9,    cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁴',disc:2000},
+  {z:117,s:'Ts', n:'Tennessine',    m:294,     cat:'Unknown',         row:7, col:17, melt:350,    boil:610,    den:7.17,    cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁵',disc:2010},
+  {z:118,s:'Og', n:'Oganesson',     m:294,     cat:'Unknown',         row:7, col:18, melt:325,    boil:450,    den:5,       cfg:'[Rn] 5f¹⁴ 6d¹⁰ 7s² 7p⁶',disc:2002},
+];
+
+const CAT = {
+  'Alkali Metal':      'var(--c-alkali)',
+  'Alkaline Earth':    'var(--c-alkaline)',
+  'Transition Metal':  'var(--c-transition)',
+  'Post-Transition':   'var(--c-post)',
+  'Metalloid':         'var(--c-metalloid)',
+  'Nonmetal':          'var(--c-nonmetal)',
+  'Noble Gas':         'var(--c-noble)',
+  'Lanthanide':        'var(--c-lanthanide)',
+  'Actinide':          'var(--c-actinide)',
+  'Unknown':           'var(--c-unknown)',
+};
+
+const PHASE_COLORS = {
+  solid:   'var(--c-solid)',
+  liquid:  'var(--c-liquid)',
+  gas:     'var(--c-gas)',
+  unknown: 'var(--c-unknown-phase)',
+};
+
+let activeFilter = '';
+let currentTemp = 25;
+let phaseMode = false;
+
+function getPhase(el, t) {
+  if (el.melt === null || el.boil === null) return 'unknown';
+  if (t < el.melt) return 'solid';
+  if (t < el.boil) return 'liquid';
+  return 'gas';
+}
+
+const grid = document.getElementById('grid');
+
+const gap = document.createElement('div');
+gap.style.cssText = 'grid-column:1/span 18;grid-row:8;height:2px;';
+grid.appendChild(gap);
+
+function fLabel(r, txt) {
+  const d = document.createElement('div');
+  d.className = 'f-label';
+  d.style.cssText = `grid-column:3;grid-row:${r};font-size:0.5rem;`;
+  d.textContent = txt;
+  grid.appendChild(d);
+}
+
+function phBox(c, r, txt, clr) {
+  const d = document.createElement('div');
+  d.className = 'f-label';
+  d.style.cssText = `grid-column:${c};grid-row:${r};border-color:${clr};color:${clr};font-size:0.5rem;`;
+  d.textContent = txt;
+  grid.appendChild(d);
+  return d;
+}
+
+function fLabel2(r, txt) {
+  const d = document.createElement('div');
+  d.className = 'f-label';
+  d.style.cssText = `grid-column:3;grid-row:${r};font-size:0.5rem;`;
+  d.textContent = txt;
+  grid.appendChild(d);
+  return d;
+}
+
+const phLa = phBox(3, 6, '57→', 'var(--c-lanthanide)');
+const phAc = phBox(3, 7, '89→', 'var(--c-actinide)');
+const phLaLabel = fLabel2(9, '57–71');
+const phAcLabel = fLabel2(10,'89–103');
+
+const elDivs = {};
+E.forEach(el => {
+  const d = document.createElement('div');
+  d.className = 'el';
+  d.style.cssText = `grid-column:${el.col};grid-row:${el.row};`;
+  d.innerHTML = `
+    <div class="top-bar"></div>
+    <span class="z">${el.z}</span>
+    <span class="sym">${el.s}</span>
+    <span class="el-name">${el.n}</span>
+    <span class="el-mass">${el.m}</span>
+  `;
+  d.addEventListener('click', () => openPanel(el));
+  grid.appendChild(d);
+  elDivs[el.z] = d;
+});
+
+function updateCellColors() {
+  E.forEach(el => {
+    const d = elDivs[el.z];
+    if (!d) return;
+    const topBar = d.querySelector('.top-bar');
+    const symEl  = d.querySelector('.sym');
+
+    if (phaseMode) {
+      const phase = getPhase(el, currentTemp);
+      const c = PHASE_COLORS[phase];
+      d.style.setProperty('--el-color', c);
+      d.style.setProperty('--phase-bg', c);
+      topBar.style.background = c;
+      symEl.style.color = c;
+    } else {
+      const c = CAT[el.cat] || 'var(--c-unknown)';
+      d.style.setProperty('--el-color', c);
+      d.style.setProperty('--phase-bg', 'transparent');
+      topBar.style.background = c;
+      symEl.style.color = c;
+    }
+  });
+}
+
+updateCellColors();
+
+const slider = document.getElementById('tempSlider');
+const tempValEl = document.getElementById('tempVal');
+
+slider.addEventListener('input', function() {
+  currentTemp = parseInt(this.value);
+  phaseMode = true;
+  tempValEl.textContent = currentTemp + ' °C';
+  updateCellColors();
+  if (document.getElementById('panel').classList.contains('open') && openedEl) {
+    refreshPhasePill(openedEl);
+  }
+});
+
+function applyFilter(cat) {
+  E.forEach(el => {
+    const d = elDivs[el.z];
+    if (!d) return;
+    if (!cat) {
+      d.classList.remove('dimmed','highlighted');
+    } else if (el.cat === cat) {
+      d.classList.remove('dimmed'); d.classList.add('highlighted');
+    } else {
+      d.classList.add('dimmed'); d.classList.remove('highlighted');
+    }
+  });
+  const lantMatch = !cat || cat === 'Lanthanide';
+  const actMatch  = !cat || cat === 'Actinide';
+  [phLa, phLaLabel].forEach(d => { if(d) d.style.opacity = lantMatch ? '1' : '0.12'; });
+  [phAc, phAcLabel].forEach(d => { if(d) d.style.opacity = actMatch  ? '1' : '0.12'; });
+}
+
+document.querySelectorAll('.filter-btn[data-cat]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const cat = btn.dataset.cat;
+    if (activeFilter === cat) {
+      activeFilter = '';
+      btn.classList.remove('active');
+    } else {
+      activeFilter = cat;
+      document.querySelectorAll('.filter-btn[data-cat]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    applyFilter(activeFilter);
+  });
+});
+
+document.getElementById('clear-btn').addEventListener('click', () => {
+  activeFilter = '';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  applyFilter('');
+  document.getElementById('search').value = '';
+  applyFilter('');
+});
+
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) { applyFilter(activeFilter); return; }
+  E.forEach(el => {
+    const d = elDivs[el.z];
+    if (!d) return;
+    const match = el.n.toLowerCase().includes(q) || el.s.toLowerCase() === q || String(el.z) === q;
+    if (match) { d.classList.remove('dimmed'); d.classList.add('highlighted'); }
+    else        { d.classList.add('dimmed'); d.classList.remove('highlighted'); }
+  });
+});
+
+let openedEl = null;
+
+function refreshPhasePill(el) {
+  const phase = getPhase(el, currentTemp);
+  const labels = {solid:'Solid',liquid:'Liquid',gas:'Gas',unknown:'Unknown'};
+  const pill = document.getElementById('phasePill');
+  if (pill) {
+    pill.className = `phase-pill ${phase === 'unknown' ? 'unknown-phase' : phase}`;
+    pill.textContent = labels[phase] + ' at ' + currentTemp + '°C';
+  }
+}
+
+function openPanel(el) {
+  openedEl = el;
+  const color = CAT[el.cat] || 'var(--c-unknown)';
+
+  document.getElementById('pSym').textContent = el.s;
+  document.getElementById('pSym').style.color = color;
+  document.getElementById('pName').textContent = el.n;
+  document.getElementById('pMeta').textContent = `Z = ${el.z}  ·  Period ${el.row <= 7 ? el.row : (el.row === 9 ? 6 : 7)}`;
+  document.getElementById('pBadges').innerHTML = `
+    <span class="badge" style="background:color-mix(in srgb,${color} 15%,transparent);color:${color};border:1px solid color-mix(in srgb,${color} 30%,transparent)">${el.cat}</span>
+    <span class="phase-pill ${(() => { const p = getPhase(el,currentTemp); return p==='unknown'?'unknown-phase':p; })()} " id="phasePill">${(() => { const p=getPhase(el,currentTemp); return {solid:'Solid',liquid:'Liquid',gas:'Gas',unknown:'Unknown'}[p]+' at '+currentTemp+'°C'; })()}</span>
+  `;
+
+  const fmt = v => v != null ? v : '—';
+
+  document.getElementById('pBody').innerHTML = `
+    <div class="p-section">Physical Properties</div>
+    <div class="p-row"><span class="lbl">Atomic Mass</span><span class="val">${el.m} u</span></div>
+    <div class="p-row"><span class="lbl">Density</span><span class="val">${fmt(el.den)} g/cm³</span></div>
+    <div class="p-row"><span class="lbl">Melting Point</span><span class="val">${fmt(el.melt)} °C</span></div>
+    <div class="p-row"><span class="lbl">Boiling Point</span><span class="val">${fmt(el.boil)} °C</span></div>
+    <div class="p-section">Identity</div>
+    <div class="p-row"><span class="lbl">Atomic Number</span><span class="val">${el.z}</span></div>
+    <div class="p-row"><span class="lbl">Symbol</span><span class="val">${el.s}</span></div>
+    <div class="p-row"><span class="lbl">Category</span><span class="val">${el.cat}</span></div>
+    <div class="p-row"><span class="lbl">Discovered</span><span class="val">${el.disc}</span></div>
+    <div class="p-section">Electron Configuration</div>
+    <div class="config-box">${el.cfg}</div>
+  `;
+
+  document.getElementById('panel').classList.add('open');
+}
+
+document.getElementById('closeBtn').addEventListener('click', () => {
+  document.getElementById('panel').classList.remove('open');
+  openedEl = null;
+});
+</script>
+</body>
+</html>
