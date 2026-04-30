@@ -1,10 +1,58 @@
 <!DOCTYPE html>
+<!--
+================================================================================
+  INTERACTIVE PERIODIC TABLE
+  Version : 1.1
+  Date    : 30 April 2026
+  Author  : Rodney Salmon / Transpacific Services
+  URL     : https://rodelbow.github.io/Menu/periodic_table.html
+================================================================================
+
+  VERSION HISTORY
+  ---------------
+  v1.1  30 Apr 2026  iPhone responsive layout
+        - <768px: scrollable element list grouped by category
+        - Header collapses: title + subtitle left, slider wraps below
+        - Search + filter buttons stack vertically (full width)
+        - Detail panel becomes full-screen bottom sheet overlay
+        - Atom canvas fills full panel width
+        - CSS @media breakpoints as primary mechanism (no JS scaling on mobile)
+        - autoScale() skips on mobile to avoid conflict with native layout
+
+  v1.0  30 Apr 2026  Initial release
+        - 118 elements with full data (atomic mass, density, melt/boil points,
+          electron configuration, discovery year)
+        - Dark-theme grid layout: 7 main periods + lanthanide/actinide f-block
+        - Category filter buttons with coloured top-bar indicators
+        - Search by name, symbol or atomic number
+        - Phase-at-temperature slider (−273°C to 6000°C) with live cell
+          recolouring: solid (blue), liquid (green), gas (purple)
+        - Element detail panel with:
+            · Symbol, name, Z, period, category, phase badge
+            · Physical properties table
+            · Electron configuration
+            · 3D animated atom diagram (canvas-based):
+                - Per-electron independent orbits (unique tilt, plane, speed)
+                - Electrons scale/fade with 3D depth (front bright, rear dim)
+                - 3D nucleus: red protons + grey neutrons, depth-sorted,
+                  packed in spherical shells, size scales with Z
+                - Proton/neutron/electron count label
+        - Atom SVG favicon + Apple Touch Icon (180×180) for dock/home screen
+        - Auto-scaling viewport for iPad and narrow browser windows
+        - GitHub Pages deployment ready (index.html redirect included)
+================================================================================
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1043, initial-scale=1.0, shrink-to-fit=yes">
-<title>Interactive Periodic Table</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%0A%20%20%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%224%22%20fill%3D%22%2307090f%22/%3E%0A%20%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%2213%22%20ry%3D%225%22%20fill%3D%22none%22%20stroke%3D%22%2300e5ff%22%20stroke-width%3D%221.4%22/%3E%0A%20%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%2213%22%20ry%3D%225%22%20fill%3D%22none%22%20stroke%3D%22%2300e5ff%22%20stroke-width%3D%221.4%22%20transform%3D%22rotate%2860%2016%2016%29%22/%3E%0A%20%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%2213%22%20ry%3D%225%22%20fill%3D%22none%22%20stroke%3D%22%2300e5ff%22%20stroke-width%3D%221.4%22%20transform%3D%22rotate%28120%2016%2016%29%22/%3E%0A%20%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%223%22%20fill%3D%22%2300e5ff%22/%3E%0A%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Periodic Table</title>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Periodic Table">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -374,6 +422,243 @@ header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-tr
 .phase-pill.liquid  { background:#1a3d2e; color:#34d399; }
 .phase-pill.gas     { background:#2d1a4d; color:#c084fc; }
 .phase-pill.unknown-phase { background:#1f2937; color:#6b7280; }
+
+/* ── Mobile element list (hidden by default, shown by @media below) ── */
+.mobile-list {
+  display: none;
+  padding: 0 16px 24px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE LAYOUT  (<768px)
+   ─ Scrollable element list instead of the grid
+   ─ Header/controls collapse to stacked layout
+   ─ Detail panel = full-screen bottom sheet
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+
+  /* Page no longer needs fixed desktop width */
+  .page {
+    min-width: 0;
+    width: 100%;
+    transform: none !important; /* override JS autoScale */
+    margin-bottom: 0 !important;
+  }
+
+  /* ── Header ── */
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 16px;
+    width: 100%;
+  }
+  .header-left { gap: 8px; }
+  header h1 { font-size: 1.7rem; letter-spacing: 2px; }
+  .header-phase {
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .header-phase input[type=range] { width: 100%; flex: 1 1 120px; }
+  .phase-legend { width: 100%; flex-wrap: wrap; gap: 8px; }
+
+  /* ── Controls ── */
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 8px 16px;
+    min-width: 0;
+  }
+  .controls input[type=text] {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+  .sep { display: none; }
+  .controls-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .filter-btn {
+    font-size: 0.68rem;
+    padding: 5px 9px 4px;
+    flex: 0 0 auto;
+  }
+  /* clear btn full width on mobile */
+  #clear-btn { width: 100%; text-align: center; margin-bottom: 2px; }
+
+  /* ── Hide desktop grid, show mobile list ── */
+  .table-wrap { display: none; }
+  .mobile-list { display: block; }
+
+  /* ── Detail panel: full-screen bottom sheet ── */
+  .panel {
+    right: 0; left: 0; top: auto; bottom: 0;
+    width: 100%;
+    max-height: 92vh;
+    transform: translateY(100%);
+    transition: transform 0.28s cubic-bezier(0.22,1,0.36,1);
+    border-left: none;
+    border-top: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+  }
+  .panel.open { transform: translateY(0); }
+
+  /* drag handle */
+  .panel::before {
+    content: '';
+    display: block;
+    width: 36px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 8px auto 0;
+    flex-shrink: 0;
+  }
+
+  .panel-atom canvas { height: 200px !important; }
+  .panel-atom { height: 200px; }
+
+  /* Atom canvas full width */
+  .panel-head { padding: 10px 16px 8px; }
+}
+
+/* ── Mobile element list items ── */
+.mob-cat-section {
+  margin-top: 16px;
+}
+.mob-cat-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 5;
+}
+.mob-cat-dot {
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.mob-cat-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* ── Shared column grid: heading + every data row use identical template ── */
+.mob-cat-heading,
+.mob-el-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 58px 58px 44px;
+  align-items: center;
+  gap: 0;
+}
+
+/* Column headers — sit in same grid columns as data */
+.mob-cat-heading {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 5;
+}
+/* dot + title together span cols 1–2 */
+.mob-cat-dot-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  grid-column: 1 / 3;
+}
+.mob-cat-dot {
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.mob-cat-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* individual column header labels */
+.mob-col-h {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.50rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #2a3550;
+  text-align: right;
+}
+.mob-col-h-phase { text-align: center; }
+
+/* ── Data rows ── */
+.mob-el-row {
+  padding: 7px 4px;
+  border-bottom: 1px solid #0d1220;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.12s;
+}
+.mob-el-row:active { background: #0d1220; }
+
+.mob-el-sym {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.35rem;
+  line-height: 1;
+  /* col 1: 40px */
+}
+.mob-el-name {
+  font-size: 0.82rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* col 2: 1fr */
+}
+.mob-el-disc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--muted);
+  text-align: right;
+  /* col 3: 58px */
+}
+.mob-el-mass {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: #2a3550;
+  text-align: right;
+  /* col 4: 58px */
+}
+.mob-el-phase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* col 5: 44px */
+}
+.mob-el-phase-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  transition: background 0.3s;
+  display: block;
+}
+
+/* Mobile filter dimming */
+.mob-cat-section.dimmed { opacity: 0.15; pointer-events: none; }
+.mob-el-row.dimmed { opacity: 0.15; pointer-events: none; }
+.mob-el-row.highlighted { background: #0d1525; }
 </style>
 </head>
 <body>
@@ -401,7 +686,8 @@ header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-tr
   <input type="text" id="search" placeholder="Name, symbol or Z…">
   <button class="filter-btn clear-btn" id="clear-btn">✕ Clear</button>
   <div class="sep"></div>
-  <button class="filter-btn" data-cat="Alkali Metal"     style="--col:var(--c-alkali);margin-left:auto">Alkali</button>
+  <div class="controls-filters">
+  <button class="filter-btn" data-cat="Alkali Metal"     style="--col:var(--c-alkali)">Alkali</button>
   <button class="filter-btn" data-cat="Alkaline Earth"   style="--col:var(--c-alkaline)">Alkaline Earth</button>
   <button class="filter-btn" data-cat="Transition Metal" style="--col:var(--c-transition)">Transition</button>
   <button class="filter-btn" data-cat="Post-Transition"  style="--col:var(--c-post)">Post-Trans.</button>
@@ -410,6 +696,7 @@ header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-tr
   <button class="filter-btn" data-cat="Noble Gas"        style="--col:var(--c-noble)">Noble Gas</button>
   <button class="filter-btn" data-cat="Lanthanide"       style="--col:var(--c-lanthanide)">Lanthanide</button>
   <button class="filter-btn" data-cat="Actinide"         style="--col:var(--c-actinide)">Actinide</button>
+  </div>
 </div>
 
 
@@ -417,6 +704,9 @@ header p { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-tr
 <div class="table-wrap">
   <div class="pt-grid" id="grid"></div>
 </div>
+
+<!-- Mobile element list (hidden on desktop, shown on <768px) -->
+<div class="mobile-list" id="mobileList"></div>
 
 
 </div><!-- /.page -->
@@ -984,6 +1274,8 @@ function applyFilter(cat) {
   const actMatch  = !cat || cat === 'Actinide';
   [phLa, phLaLabel].forEach(d => { if(d) d.style.opacity = lantMatch ? '1' : '0.12'; });
   [phAc, phAcLabel].forEach(d => { if(d) d.style.opacity = actMatch  ? '1' : '0.12'; });
+  // Mobile list
+  if (typeof applyMobileFilter === 'function') applyMobileFilter(cat);
 }
 
 document.querySelectorAll('.filter-btn[data-cat]').forEach(btn => {
@@ -1079,6 +1371,8 @@ document.getElementById('closeBtn').addEventListener('click', () => {
 
 // ─── AUTO-SCALE FOR IPAD / NARROW BROWSERS ──────────────────────────────────
 function autoScale() {
+  // Skip on true mobile — CSS @media handles layout there
+  if (window.innerWidth < 768) return;
   const page = document.querySelector('.page');
   if (!page) return;
   const vw = window.innerWidth;
@@ -1096,6 +1390,135 @@ function autoScale() {
 }
 autoScale();
 window.addEventListener('resize', autoScale);
+
+// ─── MOBILE LIST BUILDER ─────────────────────────────────────────────────────
+(function buildMobileList() {
+  const container = document.getElementById('mobileList');
+  if (!container) return;
+
+  // Category display order + colours (hex direct — no CSS vars in JS)
+  const CAT_ORDER = [
+    { cat:'Alkali Metal',      hex:'#ff4d6d', label:'Alkali Metals' },
+    { cat:'Alkaline Earth',    hex:'#ff8c42', label:'Alkaline Earth Metals' },
+    { cat:'Transition Metal',  hex:'#4facfe', label:'Transition Metals' },
+    { cat:'Post-Transition',   hex:'#a78bfa', label:'Post-Transition Metals' },
+    { cat:'Metalloid',         hex:'#34d399', label:'Metalloids' },
+    { cat:'Nonmetal',          hex:'#fbbf24', label:'Nonmetals' },
+    { cat:'Noble Gas',         hex:'#f472b6', label:'Noble Gases' },
+    { cat:'Lanthanide',        hex:'#60a5fa', label:'Lanthanides' },
+    { cat:'Actinide',          hex:'#f87171', label:'Actinides' },
+    { cat:'Unknown',           hex:'#6b7280', label:'Unknown Properties' },
+  ];
+
+  const PHASE_PHASE_HEX = { solid:'#4facfe', liquid:'#34d399', gas:'#c084fc', unknown:'#3a4560' };
+
+  // Build sections
+  CAT_ORDER.forEach(({ cat, hex, label }) => {
+    const els = E.filter(e => e.cat === cat);
+    if (!els.length) return;
+
+    const section = document.createElement('div');
+    section.className = 'mob-cat-section';
+    section.dataset.cat = cat;
+
+    section.innerHTML = `
+      <div class="mob-cat-heading">
+        <div class="mob-cat-dot-title">
+          <div class="mob-cat-dot" style="background:${hex}"></div>
+          <span class="mob-cat-title">${label}</span>
+        </div>
+        <span class="mob-col-h">Discovered</span>
+        <span class="mob-col-h">Mass</span>
+        <span class="mob-col-h mob-col-h-phase">Phase</span>
+      </div>
+    `;
+
+    els.forEach(el => {
+      const row = document.createElement('div');
+      row.className = 'mob-el-row';
+      row.dataset.z = el.z;
+      const phase = getPhase(el, currentTemp);
+      const phaseHex = PHASE_PHASE_HEX[phase];
+      row.innerHTML = `
+        <span class="mob-el-sym" style="color:${hex}">${el.s}</span>
+        <span class="mob-el-name">${el.n}</span>
+        <span class="mob-el-disc">${el.disc ?? '—'}</span>
+        <span class="mob-el-mass">${el.m}</span>
+        <div class="mob-el-phase"><span class="mob-el-phase-dot" style="background:${phaseHex}" data-z="${el.z}"></span></div>
+      `;
+      row.addEventListener('click', () => openPanel(el));
+      section.appendChild(row);
+    });
+
+    container.appendChild(section);
+  });
+
+  // Update phase dots when slider moves
+  window.updateMobilePhase = function() {
+    const PHASE_HEX = { solid:'#4facfe', liquid:'#34d399', gas:'#c084fc', unknown:'#3a4560' };
+    document.querySelectorAll('.mob-el-phase-dot').forEach(dot => {
+      const z = parseInt(dot.dataset.z, 10);
+      const el = E.find(e => e.z === z);
+      if (!el) return;
+      const phase = getPhase(el, currentTemp);
+      dot.style.background = PHASE_HEX[phase];
+    });
+  };
+
+  // Filter mobile list to match desktop filter
+  window.applyMobileFilter = function(cat) {
+    document.querySelectorAll('.mob-cat-section').forEach(sec => {
+      if (!cat) {
+        sec.classList.remove('dimmed');
+        sec.querySelectorAll('.mob-el-row').forEach(r => r.classList.remove('dimmed','highlighted'));
+      } else if (sec.dataset.cat === cat) {
+        sec.classList.remove('dimmed');
+        sec.querySelectorAll('.mob-el-row').forEach(r => { r.classList.remove('dimmed'); r.classList.add('highlighted'); });
+      } else {
+        sec.classList.add('dimmed');
+        sec.querySelectorAll('.mob-el-row').forEach(r => r.classList.remove('highlighted'));
+      }
+    });
+  };
+
+  // Search mobile list
+  window.applyMobileSearch = function(q) {
+    document.querySelectorAll('.mob-el-row').forEach(row => {
+      const z = parseInt(row.dataset.z, 10);
+      const el = E.find(e => e.z === z);
+      if (!el) return;
+      if (!q) { row.classList.remove('dimmed','highlighted'); return; }
+      const match = el.n.toLowerCase().includes(q) || el.s.toLowerCase() === q || String(el.z) === q;
+      if (match) { row.classList.remove('dimmed'); row.classList.add('highlighted'); }
+      else        { row.classList.add('dimmed'); row.classList.remove('highlighted'); }
+    });
+    // Show/hide sections based on whether any rows are visible
+    document.querySelectorAll('.mob-cat-section').forEach(sec => {
+      const hasVisible = [...sec.querySelectorAll('.mob-el-row')].some(r => !r.classList.contains('dimmed'));
+      sec.style.display = q && !hasVisible ? 'none' : '';
+    });
+  };
+})();
+
+// Hook mobile phase updates into the existing slider listener
+slider.addEventListener('input', function() {
+  if (typeof updateMobilePhase === 'function') updateMobilePhase();
+});
+
+// Hook mobile filter + search into the existing clear button
+// (filter buttons and search already call applyFilter / applyMobileSearch
+//  via the patched originals below — clear needs explicit mobile call)
+document.getElementById('clear-btn').addEventListener('click', () => {
+  if (typeof applyMobileFilter  === 'function') applyMobileFilter('');
+  if (typeof applyMobileSearch  === 'function') applyMobileSearch('');
+});
+
+// Hook mobile search into the existing search input
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (typeof applyMobileSearch === 'function') applyMobileSearch(q);
+});
+
 
 </script>
 </body>
